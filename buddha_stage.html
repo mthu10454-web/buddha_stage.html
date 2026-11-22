@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buddha Hall Stage - Outfits & Offerings</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body {
+      background: #12100e;
+      color: #f5efe6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+      gap: 14px;
+    }
+
+    .stage-wrapper {
+      width: 100%;
+      max-width: 390px;
+      aspect-ratio: 9 / 16;
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid #8a6428;
+      background: linear-gradient(to bottom, #6b8cae 0%, #c8b589 36%, #7c1d24 36%, #4a0e13 100%);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+
+    /* Buddha Image + Fallback */
+    .buddha-area {
+      position: absolute;
+      top: 6%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 125px;
+      height: 140px;
+      background: url('buddha.png') center / contain no-repeat,
+                  radial-gradient(circle at 50% 35%, #ffe680, #d49b27 70%, #8c5d0b);
+      border-radius: 16px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 2;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
+    }
+    .buddha-area.no-img span {
+      background: rgba(0,0,0,0.55);
+      color: #ffeaa7;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+
+    /* ဘုရားစင်ရှေ့ ဆီမီးနှင့် ပန်း ကပ်လှူရာနေရာ */
+    .offering-altar {
+      position: absolute;
+      top: 28.5%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 170px;
+      height: 24px;
+      background: rgba(45, 20, 10, 0.75);
+      border: 1px solid #e0b24c;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      padding: 0 6px;
+      z-index: 3;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    /* ဆီမီးခွက် နှင့် မီးတောက် Effect */
+    .altar-lamp {
+      position: relative;
+      width: 10px;
+      height: 6px;
+      background: #cd7f32;
+      border-radius: 0 0 5px 5px;
+      flex-shrink: 0;
+      animation: popIn 0.4s ease-out;
+    }
+    .altar-flame {
+      position: absolute;
+      top: -8px;
+      left: 2px;
+      width: 6px;
+      height: 9px;
+      background: radial-gradient(circle, #fff 10%, #ffdd00 50%, #ff5500 90%);
+      border-radius: 50% 50% 20% 20%;
+      box-shadow: 0 0 8px #ffaa00, 0 0 12px #ff4500;
+      animation: flicker 0.15s infinite alternate;
+    }
+
+    /* ပန်းကပ်လှူခြင်း Effect */
+    .altar-flower {
+      font-size: 12px;
+      line-height: 1;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));
+      animation: popIn 0.4s ease-out;
+    }
+
+    /* ကပ်လှူစဉ် လွင့်တက်သွားသော Effect */
+    .flying-offering {
+      position: absolute;
+      font-size: 18px;
+      pointer-events: none;
+      z-index: 10;
+      animation: flyToAltar 0.85s ease-out forwards;
+    }
+
+    .aisle {
+      position: absolute;
+      top: 35%;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14%;
+      background: linear-gradient(to bottom, #a8202a, #6e0f16);
+      border-left: 2px solid #e0b24c;
+      border-right: 2px solid #e0b24c;
+      z-index: 1;
+    }
+
+    /* Devotee PNG + Fallback */
+    .devotee {
+      position: absolute;
+      width: 34px;
+      height: 42px;
+      background: url('devotee.png') center / contain no-repeat;
+      transform: translate(-50%, -50%);
+      transition: left 0.45s linear, top 0.45s linear, transform 0.25s ease;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* PNG မရှိသည့်အခါ ပေါ်မည့် CSS ဇာတ်ကောင် နှင့် မြန်မာရိုးရာဝတ်စုံ ဒီဇိုင်းများ */
+    .devotee.fallback {
+      width: 20px;
+      height: 28px;
+      border-radius: 6px 6px 3px 3px;
+      position: absolute;
+    }
+    /* ဦးခေါင်း */
+    .devotee.fallback::before {
+      content: "";
+      position: absolute;
+      top: -9px;
+      width: 11px;
+      height: 11px;
+      background: #f1c27d;
+      border-radius: 50%;
+      border: 1px solid #3d2314;
+    }
+
+    /* ၁။ ယောဂီဝတ်စုံ (အဖြူ + အညို) */
+    .devotee.fallback.outfit-yawgi {
+      background: linear-gradient(to bottom, #f8f9fa 45%, #5c3a21 45%);
+      border: 1px solid #d4af37;
+    }
+    /* ၂။ ရွှေပိုးထည် ဝတ်စုံ (ရွှေရောင် + အစိမ်း/ပန်းရောင်) */
+    .devotee.fallback.outfit-silk {
+      background: linear-gradient(to bottom, #ffd700 45%, #006400 45%);
+      border: 1px solid #fff3b0;
+    }
+    .devotee.fallback.outfit-silk::after {
+      content: "";
+      position: absolute;
+      top: -11px;
+      width: 13px;
+      height: 4px;
+      background: #ffd700; /* ခေါင်းပေါင်း */
+      border-radius: 3px;
+    }
+    /* ၃။ တိုက်ပုံနှင့် ပုဆိုး (အနက် + အနီရင့်) */
+    .devotee.fallback.outfit-taikpon {
+      background: linear-gradient(to bottom, #1f2833 48%, #8b0000 48%);
+      border: 1px solid #e0b24c;
+    }
+    .devotee.fallback.outfit-taikpon::after {
+      content: "";
+      position: absolute;
+      top: -11px;
+      width: 13px;
+      height: 4px;
+      background: #ffffff; /* ခေါင်းပေါင်းဖြူ */
+      border-radius: 3px;
+    }
+    /* ၄။ ချိတ်ထဘီနှင့် ဇာအင်္ကျီ (ပန်းရောင်/ဝိုင်နီ) */
+    .devotee.fallback.outfit-acheik {
+      background: linear-gradient(to bottom, #ff69b4 45%, #800020 45%);
+      border: 1px solid #ffd700;
+    }
+    .devotee.fallback.outfit-acheik::after {
+      content: "";
+      position: absolute;
+      top: -12px;
+      right: 2px;
+      width: 6px;
+      height: 6px;
+      background: #1a1a1a; /* ဆံထုံး */
+      border-radius: 50%;
+    }
+
+    /* PNG ရှိခဲ့လျှင်လည်း ဝတ်စုံအမျိုးအစားအလိုက် အရောင်အလင်း ကွဲပြားစေရန် */
+    .devotee:not(.fallback).outfit-silk { filter: drop-shadow(0 0 4px #ffd700); }
+    .devotee:not(.fallback).outfit-taikpon { filter: drop-shadow(0 0 4px #ff4d4d); }
+    .devotee:not(.fallback).outfit-acheik { filter: drop-shadow(0 0 4px #ff69b4); }
+
+    .devotee.bowing {
+      transform: translate(-50%, -35%) scaleY(0.72);
+    }
+    .name-tag {
+      position: absolute;
+      top: -22px;
+      font-size: 9px;
+      background: rgba(0,0,0,0.75);
+      color: #ffeaa7;
+      padding: 1px 4px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .hide-names .name-tag { display: none; }
+
+    /* Control Panel */
+    .panel {
+      width: 100%;
+      max-width: 390px;
+      background: #1e1b18;
+      border: 1px solid #3b332a;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+    .panel h2 { font-size: 16px; color: #f3c65f; }
+    .hint { font-size: 12px; color: #c7bdb0; line-height: 1.4; }
+
+    .input-row { display: flex; gap: 8px; }
+    .name-input, .select-box {
+      flex: 1;
+      padding: 9px;
+      border-radius: 8px;
+      border: 1px solid #52473a;
+      background: #14110f;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .btn-main {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #e5a93c, #c9821e);
+      color: #1a1205;
+      cursor: pointer;
+    }
+    .btn-sec {
+      padding: 9px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #52473a;
+      border-radius: 8px;
+      background: #2a2520;
+      color: #f5efe6;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      background: #151210;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+    .stats strong { display: block; font-size: 14px; color: #f3c65f; }
+
+    .slider-group { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+    .slider-row { display: flex; justify-content: space-between; color: #d6ccc0; }
+    input[type="range"] { width: 100%; accent-color: #e5a93c; }
+
+    .toggle-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+    .log {
+      background: #14110f;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 11px;
+      color: #9be39b;
+      max-height: 75px;
+      overflow-y: auto;
+    }
+
+    /* Animations */
+    @keyframes flicker {
+      0% { transform: scale(1) rotate(-3deg); opacity: 0.9; }
+      100% { transform: scale(1.15) rotate(3deg); opacity: 1; }
+    }
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes flyToAltar {
+      0% { top: 38%; left: 50%; opacity: 1; transform: translate(-50%, -50%) scale(0.8); }
+      100% { top: 29%; left: 50%; opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stage-wrapper" id="stage">
+    <div class="buddha-area no-img" id="buddhaBox"><span>buddha.png</span></div>
+    <!-- ဆီမီးနှင့် ပန်း ကပ်လှူရာ စင် -->
+    <div class="offering-altar" id="offeringAltar" title="ကပ်လှူထားသော ဆီမီးနှင့် ပန်းများ"></div>
+    <div class="aisle"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Buddha Hall Stage (ရိုးရာဝတ်စုံ + ဆီမီး/ပန်း)</h2>
+    <p class="hint">
+      နာမည်၊ ဝတ်စုံနှင့် ကပ်လှူမည့်အရာ ရွေးချယ်ပြီး Enter နှိပ်ပါ။
+    </p>
+
+    <div class="input-row">
+      <input type="text" class="name-input" id="donorName" placeholder="အလှူရှင် နာမည် (ဥပမာ- မောင်မောင်)" />
+    </div>
+
+    <!-- ဝတ်စုံနှင့် ကပ်လှူဖွယ်ရာ ရွေးချယ်ရန် -->
+    <div class="grid-2">
+      <select class="select-box" id="outfitSelect">
+        <option value="random">👗 ဝတ်စုံ: ကျပန်း (Random)</option>
+        <option value="outfit-yawgi">🤍 ယောဂီဝတ်စုံ</option>
+        <option value="outfit-silk">💛 ရွှေပိုးထည် (အမျိုးသား)</option>
+        <option value="outfit-taikpon">🖤 တိုက်ပုံနှင့် ပုဆိုး</option>
+        <option value="outfit-acheik">🩷 ချိတ်ထဘီနှင့် ဇာအင်္ကျီ</option>
+      </select>
+
+      <select class="select-box" id="offeringSelect">
+        <option value="both">🕯️🌸 ဆီမီး + ပန်း</option>
+        <option value="lamp">🕯️ ဆီမီး သီးသန့်</option>
+        <option value="flower">🌸 ပန်း သီးသန့်</option>
+      </select>
+    </div>
+
+    <button class="btn-main" id="enterBtn">✦ Enter (ဝင်ရောက်ဦးချ + ကပ်လှူ)</button>
+
+    <div class="grid-2">
+      <button class="btn-sec" id="bowAllBtn">🙏 All Bow (စုပေါင်းဦးချ)</button>
+      <button class="btn-sec" id="clearBtn">Clear All (အားလုံးရှင်း)</button>
+    </div>
+
+    <div class="stats">
+      <div><strong id="leftCount">0 / 40</strong>Left</div>
+      <div><strong id="rightCount">0 / 40</strong>Right</div>
+      <div><strong id="walkingCount">0</strong>Walking</div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-row">
+        <span>Walk Speed (လျှောက်နှုန်း)</span>
+        <span id="speedVal">1.0x</span>
+      </div>
+      <input type="range" id="speedSlider" min="0.5" max="2.5" step="0.1" value="1.0" />
+    </div>
+
+    <div class="grid-2">
+      <label class="toggle-row">
+        <input type="checkbox" id="voiceToggle" checked />
+        <span>AI Voice Prayer</span>
+      </label>
+
+      <label class="toggle-row">
+        <input type="checkbox" id="nameToggle" checked />
+        <span>Show Name Tag</span>
+      </label>
+    </div>
+
+    <div class="log" id="logBox">[Ready] ရိုးရာဝတ်စုံများနှင့် ဆီမီး/ပန်း ကပ်လှူစနစ် အသင့်ဖြစ်ပါပြီ။</div>
+  </div>
+
+  <script>
+    const stage = document.getElementById("stage");
+    const buddhaBox = document.getElementById("buddhaBox");
+    const offeringAltar = document.getElementById("offeringAltar");
+    const donorInput = document.getElementById("donorName");
+    const outfitSelect = document.getElementById("outfitSelect");
+    const offeringSelect = document.getElementById("offeringSelect");
+    const enterBtn = document.getElementById("enterBtn");
+    const bowAllBtn = document.getElementById("bowAllBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const speedSlider = document.getElementById("speedSlider");
+    const speedVal = document.getElementById("speedVal");
+    const voiceToggle = document.getElementById("voiceToggle");
+    const nameToggle = document.getElementById("nameToggle");
+    const logBox = document.getElementById("logBox");
+
+    const TOTAL_PER_SIDE = 40;
+    const seats = [];
+    let devotees = [];
+    let counter = 0;
+    let walking = 0;
+    let speed = 1.0;
+    let hasDevoteeImg = false;
+
+    const OUTFIT_LIST = ["outfit-yawgi", "outfit-silk", "outfit-taikpon", "outfit-acheik"];
+    const OUTFIT_NAMES = {
+      "outfit-yawgi": "ယောဂီဝတ်စုံ",
+      "outfit-silk": "ရွှေပိုးထည်",
+      "outfit-taikpon": "တိုက်ပုံဝတ်စုံ",
+      "outfit-acheik": "ချိတ်ထဘီဝတ်စုံ"
+    };
+
+    // Check if buddha.png & devotee.png exist
+    const testBuddha = new Image();
+    testBuddha.src = "buddha.png";
+    testBuddha.onload = () => {
+      buddhaBox.classList.remove("no-img");
+      buddhaBox.innerHTML = "";
+    };
+
+    const testDevotee = new Image();
+    testDevotee.src = "devotee.png";
+    testDevotee.onload = () => { hasDevoteeImg = true; };
+
+    // Voice Queue
+    const speechQueue = [];
+    let isSpeaking = false;
+
+    function speakPrayer(name, offeringType) {
+      if (!voiceToggle.checked || !("speechSynthesis" in window)) return;
+      let itemText = "ဆီမီးနှင့် ပန်းများ";
+      if (offeringType === "lamp") itemText = "ဆီမီး";
+      if (offeringType === "flower") itemText = "ပန်းမန်များ";
+
+      const text = `${name} က ${itemText} ကပ်လှူပူဇော်ပါသည်၊ ကိုယ်စိတ်နှစ်ဖြာ ကျန်းမာချမ်းသာပါစေ။`;
+      speechQueue.push(text);
+      processSpeechQueue();
+    }
+
+    function processSpeechQueue() {
+      if (isSpeaking || speechQueue.length === 0) return;
+      isSpeaking = true;
+      const msg = new SpeechSynthesisUtterance(speechQueue.shift());
+      const voices = window.speechSynthesis.getVoices();
+      const myVoice = voices.find(v => v.lang && v.lang.toLowerCase().includes("my"));
+      if (myVoice) msg.voice = myVoice;
+      msg.lang = myVoice ? myVoice.lang : "my-MM";
+      msg.rate = 0.95;
+      msg.onend = () => { isSpeaking = false; processSpeechQueue(); };
+      msg.onerror = () => { isSpeaking = false; processSpeechQueue(); };
+      window.speechSynthesis.speak(msg);
+    }
+
+    // ဆီမီး / ပန်း ကပ်လှူသည့် Effect
+    function triggerOfferingEffect(type) {
+      const itemsToOffer = type === "both" ? ["lamp", "flower"] : [type];
+
+      itemsToOffer.forEach((item, idx) => {
+        // ၁။ လွင့်တက်သွားသော Animation
+        const flyer = document.createElement("div");
+        flyer.className = "flying-offering";
+        flyer.textContent = item === "lamp" ? "🕯️" : "🪷";
+        flyer.style.marginLeft = idx === 0 ? "-10px" : "10px";
+        stage.appendChild(flyer);
+        setTimeout(() => flyer.remove(), 850);
+
+        // ၂။ စင်ပေါ်တွင် တင်ကျန်ရစ်စေခြင်း (အများဆုံး ၁၂ ခုအထိ)
+        setTimeout(() => {
+          if (offeringAltar.children.length >= 12) {
+            offeringAltar.removeChild(offeringAltar.firstChild);
+          }
+
+          if (item === "lamp") {
+            const lamp = document.createElement("div");
+            lamp.className = "altar-lamp";
+            const flame = document.createElement("div");
+            flame.className = "altar-flame";
+            lamp.appendChild(flame);
+            offeringAltar.appendChild(lamp);
+          } else {
+            const flowers = ["🪷", "🌸", "🌼", "🌺"];
+            const flw = document.createElement("div");
+            flw.className = "altar-flower";
+            flw.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+            offeringAltar.appendChild(flw);
+          }
+        }, 450);
+      });
+    }
+
+    function buildSeats() {
+      seats.length = 0;
+      const rows = 10;
+      const cols = 4;
+      for (let r = 0; r < rows; r++) {
+        const y = 41 + r * 5.5;
+        for (let c = 0; c < cols; c++) {
+          const x = 18 + c * 6.5;
+          seats.push({ side: "L", index: r * cols + c + 1, x, y, taken: false });
+        }
+        for (let c = 0; c < cols; c++) {
+          const x = 61 + c * 6.5;
+          seats.push({ side: "R", index: r * cols + c + 1, x, y, taken: false });
+        }
+      }
+    }
+
+    function updateStats() {
+      const leftTaken = seats.filter(s => s.side === "L" && s.taken).length;
+      const rightTaken = seats.filter(s => s.side === "R" && s.taken).length;
+      document.getElementById("leftCount").textContent = `${leftTaken} / ${TOTAL_PER_SIDE}`;
+      document.getElementById("rightCount").textContent = `${rightTaken} / ${TOTAL_PER_SIDE}`;
+      document.getElementById("walkingCount").textContent = walking;
+    }
+
+    function addLog(msg) {
+      const time = new Date().toLocaleTimeString("en-GB", { hour12: false });
+      logBox.innerHTML = `<div>[${time}] ${msg}</div>` + logBox.innerHTML;
+    }
+
+    const wait = (ms) => new Promise(res => setTimeout(res, ms / speed));
+
+    async function spawnDevotee() {
+      const seat = seats.find(s => !s.taken);
+      if (!seat) {
+        addLog("နေရာ ၈၀ ပြည့်သွားပါပြီ။");
+        return;
+      }
+      seat.taken = true;
+      counter++;
+      walking++;
+      updateStats();
+
+      const typedName = donorInput.value.trim();
+      const name = typedName || `ဧည့်သည် #${counter}`;
+      if (typedName) donorInput.value = "";
+
+      // ဝတ်စုံ ရွေးချယ်မှု
+      let chosenOutfit = outfitSelect.value;
+      if (chosenOutfit === "random") {
+        chosenOutfit = OUTFIT_LIST[Math.floor(Math.random() * OUTFIT_LIST.length)];
+      }
+      const chosenOffering = offeringSelect.value;
+
+      const el = document.createElement("div");
+      el.className = hasDevoteeImg 
+        ? `devotee ${chosenOutfit}` 
+        : `devotee fallback ${chosenOutfit}`;
+      el.innerHTML = `<span class="name-tag">${name}</span>`;
+
+      el.style.left = "50%";
+      el.style.top = "96%";
+      stage.appendChild(el);
+      devotees.push(el);
+
+      // လျှောက်လမ်းအတိုင်း ဘုရားရှေ့သို့ လျှောက်လာခြင်း
+      el.style.left = "50%";
+      el.style.top = "38%";
+      await wait(1100);
+
+      // ဦးချခြင်း + ဆီမီး/ပန်း ကပ်လှူခြင်း
+      el.classList.add("bowing");
+      triggerOfferingEffect(chosenOffering);
+      addLog(`${name} (${OUTFIT_NAMES[chosenOutfit]}) ကပ်လှူဦးချနေပါသည်။`);
+      speakPrayer(name, chosenOffering);
+      await wait(950);
+      el.classList.remove("bowing");
+
+      // သတ်မှတ်ထိုင်ခုံသို့ သွားထိုင်ခြင်း
+      el.style.left = `${seat.x}%`;
+      el.style.top = `${seat.y}%`;
+      await wait(900);
+
+      walking--;
+      updateStats();
+      addLog(`${name} (${seat.side}-${seat.index}) တွင် ထိုင်ပြီးပါပြီ။`);
+    }
+
+    enterBtn.addEventListener("click", spawnDevotee);
+
+    // Enter ခလုတ်နှိပ်ရုံဖြင့် တန်းဝင်နိုင်ရန်
+    donorInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") spawnDevotee();
+    });
+
+    bowAllBtn.addEventListener("click", async () => {
+      devotees.forEach(d => d.classList.add("bowing"));
+      addLog("စုပေါင်း ဦးချနေပါသည်။");
+      await wait(900);
+      devotees.forEach(d => d.classList.remove("bowing"));
+    });
+
+    clearBtn.addEventListener("click", () => {
+      devotees.forEach(d => d.remove());
+      devotees = [];
+      seats.forEach(s => s.taken = false);
+      offeringAltar.innerHTML = "";
+      counter = 0;
+      walking = 0;
+      updateStats();
+      addLog("နေရာနှင့် ကပ်လှူထားသည်များ ရှင်းလင်းပြီးပါပြီ။");
+    });
+
+    speedSlider.addEventListener("input", (e) => {
+      speed = parseFloat(e.target.value);
+      speedVal.textContent = `${speed.toFixed(1)}x`;
+    });
+
+    nameToggle.addEventListener("change", (e) => {
+      stage.classList.toggle("hide-names", !e.target.checked);
+    });
+
+    buildSeats();
+    updateStats();
+  </script>
+</body>
+                                                        </html>
+
