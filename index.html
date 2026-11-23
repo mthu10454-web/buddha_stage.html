@@ -32,11 +32,11 @@
     /* အပေါ်ပိုင်း ဘုရားရှင်နှင့် ပလ္လင် */
     .buddha-statue {
       position: absolute;
-      top: 3%;
+      top: 2.5%;
       left: 50%;
       transform: translateX(-50%);
-      width: 58%;
-      max-height: 30%;
+      width: 56%;
+      max-height: 29%;
       object-fit: contain;
       z-index: 3;
       pointer-events: none;
@@ -61,12 +61,12 @@
     /* ဘုရားစင်ရှေ့ ဆီမီးနှင့် ပန်း ကပ်လှူရာနေရာ */
     .offering-altar {
       position: absolute;
-      top: 33.5%;
+      top: 32.5%;
       left: 50%;
       transform: translateX(-50%);
       width: 165px;
       height: 22px;
-      background: rgba(35, 16, 8, 0.78);
+      background: rgba(35, 16, 8, 0.82);
       border: 1px solid rgba(224, 178, 76, 0.85);
       border-radius: 8px;
       display: flex;
@@ -115,7 +115,7 @@
 
     .incense-particle {
       position: absolute;
-      top: 32%;
+      top: 31%;
       left: 50%;
       font-size: 11px;
       pointer-events: none;
@@ -125,7 +125,7 @@
 
     .blessing-banner {
       position: absolute;
-      top: 37.5%;
+      top: 36.8%;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(25, 10, 5, 0.9);
@@ -142,27 +142,47 @@
     }
     .blessing-banner.show { opacity: 1; }
 
-    /* အောက်ပိုင်း ကော်ဇောနီလမ်း */
+    /* အလယ် ကော်ဇောနီလမ်း */
     .carpet-aisle {
       position: absolute;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 78%;
+      width: 28%;
       height: 58%;
       object-fit: fill;
       pointer-events: none;
       z-index: 1;
     }
 
+    /* ဘယ်/ညာ ထိုင်ခုံ/နေရာ အမှတ်အသားများ */
+    .seat-spot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px dashed rgba(243, 198, 95, 0.45);
+      background: rgba(255, 215, 120, 0.08);
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .seat-spot.taken {
+      border-color: rgba(243, 198, 95, 0.85);
+      background: rgba(243, 198, 95, 0.22);
+    }
+    .hide-seats .seat-spot { display: none; }
+
     /* Devotee Sprite */
     .devotee {
       position: absolute;
-      width: 38px;
-      height: 48px;
-      background: url('buddha.png') center / contain no-repeat;
-      mix-blend-mode: multiply;
-      image-rendering: pixelated;
+      width: 34px;
+      height: 34px;
+      background-image: url('devotee_walk.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 6px;
       transform: translate(-50%, -50%) scale(var(--dev-scale, 1));
       z-index: 6;
       display: flex;
@@ -170,22 +190,21 @@
       align-items: center;
     }
 
-    /* ကပ်လှူနေစဉ် 676049335_1795367408068145.jpg သို့ ပြောင်းပြခြင်း */
+    /* ကပ်လှူနေစဉ် ပုံသို့ ပြောင်းပြခြင်း */
     .devotee.offering-pose {
-      background-image: url('676049335_1795367408068145.jpg');
-      mix-blend-mode: multiply;
-      transform: translate(-50%, -46%) scale(calc(var(--dev-scale, 1) * 1.12));
+      background-image: url('devotee_offer.png');
+      transform: translate(-50%, -48%) scale(calc(var(--dev-scale, 1) * 1.15));
     }
 
     /* ဦးချ / ရှိခိုး အနေအထား */
     .devotee.bowing {
-      background-image: url('buddha.png');
-      mix-blend-mode: multiply;
-      transform: translate(-50%, -36%) scale(calc(var(--dev-scale, 1) * 0.92));
+      background-image: url('devotee_bow.png');
+      transform: translate(-50%, -44%) scale(calc(var(--dev-scale, 1) * 0.96));
     }
 
     /* လမ်းလျှောက်နေစဉ် ခြေလှမ်းကြွလှုပ်မှု */
     .devotee.walking {
+      background-image: url('devotee_walk.png');
       animation: walkBob 0.32s ease-in-out infinite alternate;
     }
 
@@ -203,7 +222,6 @@
       padding: 1px 4px;
       border-radius: 4px;
       white-space: nowrap;
-      mix-blend-mode: normal;
     }
     .hide-names .name-tag { display: none; }
 
@@ -379,7 +397,12 @@
       </label>
     </div>
 
-    <div class="log" id="logBox">[Ready] ဘုရားရှင်၊ ပလ္လင်နှင့် လှုပ်ရှားမှုပုံများ အသင့်ဖြစ်ပါပြီ။</div>
+    <label class="toggle-row">
+      <input type="checkbox" id="seatToggle" checked />
+      <span>Show Left/Right Seat Spots (ဘယ်/ညာ နေရာပြ)</span>
+    </label>
+
+    <div class="log" id="logBox">[Ready] ဘုရားရှင်၊ ပလ္လင်၊ ဘယ်/ညာ နေရာများနှင့် လှုပ်ရှားမှုပုံများ အသင့်ဖြစ်ပါပြီ။</div>
   </div>
 
   <script>
@@ -396,6 +419,7 @@
     const speedVal = document.getElementById("speedVal");
     const voiceToggle = document.getElementById("voiceToggle");
     const nameToggle = document.getElementById("nameToggle");
+    const seatToggle = document.getElementById("seatToggle");
     const logBox = document.getElementById("logBox");
 
     const TOTAL_PER_SIDE = 40;
@@ -492,19 +516,34 @@
       });
     }
 
+    // အလယ်ကော်ဇော ဘယ်/ညာ ၂ ဖက်တွင် ထိုင်မည့်နေရာ (Left 40 / Right 40)
     function buildSeats() {
       seats.length = 0;
+      stage.querySelectorAll(".seat-spot").forEach(n => n.remove());
+
       const rows = 10;
       const cols = 4;
       for (let r = 0; r < rows; r++) {
-        const y = 50 + r * 4.5;
+        const y = 49 + r * 4.6;
+        // ဘယ်ဘက် (Left side of carpet)
         for (let c = 0; c < cols; c++) {
-          const x = 14 + c * 6.8;
-          seats.push({ side: "L", index: r * cols + c + 1, x, y, taken: false });
+          const x = 10 + c * 6.2;
+          const spotEl = document.createElement("div");
+          spotEl.className = "seat-spot";
+          spotEl.style.left = `${x}%`;
+          spotEl.style.top = `${y}%`;
+          stage.appendChild(spotEl);
+          seats.push({ side: "L", index: r * cols + c + 1, x, y, taken: false, spotEl });
         }
+        // ညာဘက် (Right side of carpet)
         for (let c = 0; c < cols; c++) {
-          const x = 60 + c * 6.8;
-          seats.push({ side: "R", index: r * cols + c + 1, x, y, taken: false });
+          const x = 67 + c * 6.2;
+          const spotEl = document.createElement("div");
+          spotEl.className = "seat-spot";
+          spotEl.style.left = `${x}%`;
+          spotEl.style.top = `${y}%`;
+          stage.appendChild(spotEl);
+          seats.push({ side: "R", index: r * cols + c + 1, x, y, taken: false, spotEl });
         }
       }
     }
@@ -531,6 +570,7 @@
         return;
       }
       seat.taken = true;
+      seat.spotEl.classList.add("taken");
       counter++;
       walking++;
       updateStats();
@@ -550,7 +590,7 @@
       el.innerHTML = `<span class="name-tag">${name}</span>`;
       el.style.left = "50%";
       el.style.top = "95%";
-      el.style.setProperty("--dev-scale", "1.05");
+      el.style.setProperty("--dev-scale", "0.95");
       stage.appendChild(el);
       devotees.push(el);
 
@@ -559,7 +599,7 @@
       el.style.transition = `left ${moveMs}ms linear, top ${moveMs}ms linear, transform 0.25s ease`;
       el.style.left = "50%";
       el.style.top = "44%";
-      el.style.setProperty("--dev-scale", "0.82");
+      el.style.setProperty("--dev-scale", "0.75");
       await wait(1200);
 
       // ၂။ ဆီမီး/ပန်း ကပ်လှူခြင်း + ဦးချခြင်း
@@ -569,47 +609,4 @@
       showBlessing(`🙏 ${name} — ဆီမီးပန်း ကပ်လှူပြီး ကျန်းမာချမ်းသာပါစေ`);
       addLog(`${name} (${OUTFIT_NAMES[chosenOutfit]}) ကပ်လှူနေပါသည်။`);
       speakPrayer(name, chosenOffering);
-      await wait(850);
-
-      el.classList.remove("offering-pose");
-      el.classList.add("bowing");
-      await wait(550);
-      el.classList.remove("bowing");
-
-      // ၃။ သတ်မှတ်ထိုင်ခုံသို့ သွားထိုင်ခြင်း
-      const seatMs = Math.round(950 / speed);
-      const seatScale = (0.72 + ((seat.y - 50) / 45) * 0.33).toFixed(2);
-      el.style.transition = `left ${seatMs}ms linear, top ${seatMs}ms linear, transform 0.25s ease`;
-      el.classList.add("walking");
-      el.style.left = `${seat.x}%`;
-      el.style.top = `${seat.y}%`;
-      el.style.setProperty("--dev-scale", seatScale);
-      await wait(950);
-      el.classList.remove("walking");
-
-      walking--;
-      updateStats();
-      addLog(`${name} (${seat.side}-${seat.index}) တွင် ထိုင်ပြီးပါပြီ။`);
-    }
-
-    enterBtn.addEventListener("click", spawnDevotee);
-    donorInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") spawnDevotee();
-    });
-
-    bowAllBtn.addEventListener("click", async () => {
-      devotees.forEach(d => d.classList.add("bowing"));
-      addLog("စုပေါင်း ဦးချနေပါသည်။");
-      await wait(900);
-      devotees.forEach(d => d.classList.remove("bowing"));
-    });
-
-    clearBtn.addEventListener("click", () => {
-      devotees.forEach(d => d.remove());
-      devotees = [];
-      seats.forEach(s => s.taken = false);
-      offeringAltar.innerHTML = "";
-      counter = 0;
-      walking = 0;
-      updateStats();
-      addLog(
+      await wait(85
