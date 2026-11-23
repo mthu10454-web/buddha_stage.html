@@ -16,7 +16,7 @@
       gap: 14px;
     }
 
-    /* နောက်ခံ ကျောင်းဆောင်ပုံ (1000141496.jpg) */
+    /* ကျောင်းဆောင် Stage (9:16 Portrait) */
     .stage-wrapper {
       width: 100%;
       max-width: 390px;
@@ -25,20 +25,48 @@
       border-radius: 16px;
       overflow: hidden;
       border: 2px solid #8a6428;
-      background: url('1000141496.jpg') center / 100% 100% no-repeat, #2a1810;
+      background: radial-gradient(circle at 50% 20%, #4b2d14 0%, #241309 65%, #160b05 100%);
       box-shadow: 0 12px 30px rgba(0,0,0,0.65);
+    }
+
+    /* အလယ် ကော်ဇောနီလမ်း */
+    .carpet-aisle {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 68%;
+      height: 64%;
+      background: url('1000141496-removebg-preview.png') center bottom / 100% 100% no-repeat;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* အပေါ်ပိုင်း ဘုရားရှင်နှင့် ပလ္လင် */
+    .buddha-statue {
+      position: absolute;
+      top: 4%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 195px;
+      max-width: 56%;
+      height: auto;
+      object-fit: contain;
+      z-index: 3;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
     }
 
     /* ဘုရားပုံတော် အပေါ်မှ ညင်သာသော ရွှေရောင်အလင်း */
     .buddha-glow {
       position: absolute;
-      top: 10%;
+      top: 6%;
       left: 50%;
       transform: translateX(-50%);
-      width: 165px;
-      height: 175px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 224, 115, 0.36) 0%, rgba(255, 180, 30, 0.12) 55%, transparent 75%);
+      background: radial-gradient(circle, rgba(255, 224, 115, 0.35) 0%, rgba(255, 180, 30, 0.12) 55%, transparent 75%);
       animation: auraPulse 3.2s ease-in-out infinite alternate;
       pointer-events: none;
       z-index: 2;
@@ -60,7 +88,7 @@
       align-items: center;
       gap: 4px;
       padding: 0 6px;
-      z-index: 3;
+      z-index: 4;
       overflow: hidden;
     }
 
@@ -101,7 +129,7 @@
 
     .incense-particle {
       position: absolute;
-      top: 33%;
+      top: 30%;
       left: 50%;
       font-size: 11px;
       pointer-events: none;
@@ -128,30 +156,30 @@
     }
     .blessing-banner.show { opacity: 1; }
 
-    /* Devotee Sprite (1000141498.png & 1000141499.jpg) */
+    /* Devotee Sprite */
     .devotee {
       position: absolute;
-      width: 34px;
-      height: 44px;
-      background: url('1000141498.png') center / contain no-repeat;
+      width: 36px;
+      height: 46px;
+      background: url('buddha.png') center / contain no-repeat;
       image-rendering: pixelated;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(var(--dev-scale, 1));
       z-index: 5;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* ကပ်လှူနေစဉ် 1000141499.jpg သို့ ပြောင်းပြခြင်း */
+    /* ကပ်လှူနေစဉ် ပုံသို့ ပြောင်းပြခြင်း */
     .devotee.offering-pose {
-      background-image: url('1000141499.jpg');
-      mix-blend-mode: multiply;
-      transform: translate(-50%, -45%) scale(1.12);
+      background-image: url('676049535_1760674368304145_676049535_1760674368304145.png');
+      transform: translate(-50%, -46%) scale(calc(var(--dev-scale, 1) * 1.12));
     }
 
     /* ဦးချ / ရှိခိုး အနေအထား */
     .devotee.bowing {
-      transform: translate(-50%, -35%) scaleY(0.76);
+      background-image: url('buddha.png');
+      transform: translate(-50%, -36%) scale(calc(var(--dev-scale, 1) * 0.92));
     }
 
     /* လမ်းလျှောက်နေစဉ် ခြေလှမ်းကြွလှုပ်မှု */
@@ -166,14 +194,13 @@
 
     .name-tag {
       position: absolute;
-      top: -16px;
+      top: -15px;
       font-size: 9px;
       background: rgba(0,0,0,0.78);
       color: #ffeaa7;
       padding: 1px 4px;
       border-radius: 4px;
       white-space: nowrap;
-      mix-blend-mode: normal;
     }
     .hide-names .name-tag { display: none; }
 
@@ -284,6 +311,8 @@
 
   <div class="stage-wrapper" id="stage">
     <div class="buddha-glow"></div>
+    <img class="buddha-statue" src="1000141877-removebg-preview.png" alt="ဘုရားရှင်နှင့် ပလ္လင်" />
+    <div class="carpet-aisle"></div>
     <div class="offering-altar" id="offeringAltar" title="ကပ်လှူထားသော ဆီမီးနှင့် ပန်းများ"></div>
     <div class="blessing-banner" id="blessingBanner"></div>
   </div>
@@ -347,7 +376,7 @@
       </label>
     </div>
 
-    <div class="log" id="logBox">[Ready] ပုံ ၃ ပုံဖြင့် ဘုရားကျောင်းဆောင် စနစ် အသင့်ဖြစ်ပါပြီ။</div>
+    <div class="log" id="logBox">[Ready] ဘုရားရှင်၊ ပလ္လင်နှင့် လှုပ်ရှားမှုပုံများ အသင့်ဖြစ်ပါပြီ။</div>
   </div>
 
   <script>
@@ -460,7 +489,6 @@
       });
     }
 
-    // နောက်ခံပုံထဲက ဘယ်/ညာ ကော်ဇောထိုင်နေရာများနှင့် ကိုက်ညီအောင် ညှိထားသည်
     function buildSeats() {
       seats.length = 0;
       const rows = 10;
@@ -519,17 +547,19 @@
       el.innerHTML = `<span class="name-tag">${name}</span>`;
       el.style.left = "50%";
       el.style.top = "96%";
+      el.style.setProperty("--dev-scale", "1.05");
       stage.appendChild(el);
       devotees.push(el);
 
-      // ၁။ ကော်ဇောနီအတိုင်း ရှေ့သို့ လျှောက်လာခြင်း (1000141498.png)
+      // ၁။ ကော်ဇောနီအတိုင်း ရှေ့သို့ လျှောက်လာခြင်း
       const moveMs = Math.round(1200 / speed);
       el.style.transition = `left ${moveMs}ms linear, top ${moveMs}ms linear, transform 0.25s ease`;
       el.style.left = "50%";
       el.style.top = "42%";
+      el.style.setProperty("--dev-scale", "0.82");
       await wait(1200);
 
-      // ၂။ ဆီမီး/ပန်း ကပ်လှူခြင်း (1000141499.jpg) + ဦးချခြင်း
+      // ၂။ ဆီမီး/ပန်း ကပ်လှူခြင်း + ဦးချခြင်း
       el.classList.remove("walking");
       el.classList.add("offering-pose");
       triggerOfferingEffect(chosenOffering);
@@ -545,10 +575,12 @@
 
       // ၃။ သတ်မှတ်ထိုင်ခုံသို့ သွားထိုင်ခြင်း
       const seatMs = Math.round(950 / speed);
+      const seatScale = (0.72 + ((seat.y - 50) / 46) * 0.33).toFixed(2);
       el.style.transition = `left ${seatMs}ms linear, top ${seatMs}ms linear, transform 0.25s ease`;
       el.classList.add("walking");
       el.style.left = `${seat.x}%`;
       el.style.top = `${seat.y}%`;
+      el.style.setProperty("--dev-scale", seatScale);
       await wait(950);
       el.classList.remove("walking");
 
@@ -580,17 +612,4 @@
       addLog("နေရာနှင့် ကပ်လှူထားသည်များ ရှင်းလင်းပြီးပါပြီ။");
     });
 
-    speedSlider.addEventListener("input", (e) => {
-      speed = parseFloat(e.target.value);
-      speedVal.textContent = `${speed.toFixed(1)}x`;
-    });
-
-    nameToggle.addEventListener("change", (e) => {
-      stage.classList.toggle("hide-names", !e.target.checked);
-    });
-
-    buildSeats();
-    updateStats();
-  </script>
-</body>
-</html>
+    speedSlider.addEventListener("in
