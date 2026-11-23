@@ -25,46 +25,32 @@
       border-radius: 16px;
       overflow: hidden;
       border: 2px solid #8a6428;
-      background: radial-gradient(circle at 50% 20%, #4b2d14 0%, #241309 65%, #160b05 100%);
+      background: radial-gradient(circle at 50% 22%, #4a2d13 0%, #221208 65%, #130904 100%);
       box-shadow: 0 12px 30px rgba(0,0,0,0.65);
-    }
-
-    /* အလယ် ကော်ဇောနီလမ်း */
-    .carpet-aisle {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 68%;
-      height: 64%;
-      background: url('1000141496-removebg-preview.png') center bottom / 100% 100% no-repeat;
-      pointer-events: none;
-      z-index: 1;
     }
 
     /* အပေါ်ပိုင်း ဘုရားရှင်နှင့် ပလ္လင် */
     .buddha-statue {
       position: absolute;
-      top: 4%;
+      top: 3%;
       left: 50%;
       transform: translateX(-50%);
-      width: 195px;
-      max-width: 56%;
-      height: auto;
+      width: 58%;
+      max-height: 30%;
       object-fit: contain;
       z-index: 3;
       pointer-events: none;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
     }
 
     /* ဘုရားပုံတော် အပေါ်မှ ညင်သာသော ရွှေရောင်အလင်း */
     .buddha-glow {
       position: absolute;
-      top: 6%;
+      top: 4%;
       left: 50%;
       transform: translateX(-50%);
-      width: 180px;
-      height: 180px;
+      width: 170px;
+      height: 170px;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(255, 224, 115, 0.35) 0%, rgba(255, 180, 30, 0.12) 55%, transparent 75%);
       animation: auraPulse 3.2s ease-in-out infinite alternate;
@@ -75,13 +61,13 @@
     /* ဘုရားစင်ရှေ့ ဆီမီးနှင့် ပန်း ကပ်လှူရာနေရာ */
     .offering-altar {
       position: absolute;
-      top: 31.5%;
+      top: 33.5%;
       left: 50%;
       transform: translateX(-50%);
-      width: 155px;
+      width: 165px;
       height: 22px;
-      background: rgba(35, 16, 8, 0.72);
-      border: 1px solid rgba(224, 178, 76, 0.8);
+      background: rgba(35, 16, 8, 0.78);
+      border: 1px solid rgba(224, 178, 76, 0.85);
       border-radius: 8px;
       display: flex;
       justify-content: center;
@@ -129,7 +115,7 @@
 
     .incense-particle {
       position: absolute;
-      top: 30%;
+      top: 32%;
       left: 50%;
       font-size: 11px;
       pointer-events: none;
@@ -139,10 +125,10 @@
 
     .blessing-banner {
       position: absolute;
-      top: 35.5%;
+      top: 37.5%;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(25, 10, 5, 0.88);
+      background: rgba(25, 10, 5, 0.9);
       border: 1px solid #f3c65f;
       color: #ffeaa7;
       font-size: 10px;
@@ -156,16 +142,29 @@
     }
     .blessing-banner.show { opacity: 1; }
 
+    /* အောက်ပိုင်း ကော်ဇောနီလမ်း */
+    .carpet-aisle {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 78%;
+      height: 58%;
+      object-fit: fill;
+      pointer-events: none;
+      z-index: 1;
+    }
+
     /* Devotee Sprite */
     .devotee {
       position: absolute;
-      width: 36px;
-      height: 46px;
+      width: 38px;
+      height: 48px;
       background: url('buddha.png') center / contain no-repeat;
       mix-blend-mode: multiply;
       image-rendering: pixelated;
       transform: translate(-50%, -50%) scale(var(--dev-scale, 1));
-      z-index: 5;
+      z-index: 6;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -199,7 +198,7 @@
       position: absolute;
       top: -15px;
       font-size: 9px;
-      background: rgba(0,0,0,0.78);
+      background: rgba(0,0,0,0.82);
       color: #ffeaa7;
       padding: 1px 4px;
       border-radius: 4px;
@@ -306,8 +305,8 @@
       100% { transform: scale(1); opacity: 1; }
     }
     @keyframes flyToAltar {
-      0% { top: 41%; left: 50%; opacity: 1; transform: translate(-50%, -50%) scale(0.8); }
-      100% { top: 32%; left: 50%; opacity: 0; transform: translate(-50%, -50%) scale(1.35); }
+      0% { top: 43%; left: 50%; opacity: 1; transform: translate(-50%, -50%) scale(0.8); }
+      100% { top: 34%; left: 50%; opacity: 0; transform: translate(-50%, -50%) scale(1.35); }
     }
   </style>
 </head>
@@ -316,7 +315,7 @@
   <div class="stage-wrapper" id="stage">
     <div class="buddha-glow"></div>
     <img class="buddha-statue" src="1000141877-removebg-preview.png" alt="ဘုရားရှင်နှင့် ပလ္လင်" />
-    <div class="carpet-aisle"></div>
+    <img class="carpet-aisle" src="1000141496-removebg-preview.png" alt="ကော်ဇောနီလမ်း" />
     <div class="offering-altar" id="offeringAltar" title="ကပ်လှူထားသော ဆီမီးနှင့် ပန်းများ"></div>
     <div class="blessing-banner" id="blessingBanner"></div>
   </div>
@@ -498,7 +497,7 @@
       const rows = 10;
       const cols = 4;
       for (let r = 0; r < rows; r++) {
-        const y = 50 + r * 4.6;
+        const y = 50 + r * 4.5;
         for (let c = 0; c < cols; c++) {
           const x = 14 + c * 6.8;
           seats.push({ side: "L", index: r * cols + c + 1, x, y, taken: false });
@@ -550,7 +549,7 @@
       el.className = `devotee ${chosenOutfit} walking`;
       el.innerHTML = `<span class="name-tag">${name}</span>`;
       el.style.left = "50%";
-      el.style.top = "96%";
+      el.style.top = "95%";
       el.style.setProperty("--dev-scale", "1.05");
       stage.appendChild(el);
       devotees.push(el);
@@ -559,7 +558,7 @@
       const moveMs = Math.round(1200 / speed);
       el.style.transition = `left ${moveMs}ms linear, top ${moveMs}ms linear, transform 0.25s ease`;
       el.style.left = "50%";
-      el.style.top = "42%";
+      el.style.top = "44%";
       el.style.setProperty("--dev-scale", "0.82");
       await wait(1200);
 
@@ -579,7 +578,7 @@
 
       // ၃။ သတ်မှတ်ထိုင်ခုံသို့ သွားထိုင်ခြင်း
       const seatMs = Math.round(950 / speed);
-      const seatScale = (0.72 + ((seat.y - 50) / 46) * 0.33).toFixed(2);
+      const seatScale = (0.72 + ((seat.y - 50) / 45) * 0.33).toFixed(2);
       el.style.transition = `left ${seatMs}ms linear, top ${seatMs}ms linear, transform 0.25s ease`;
       el.classList.add("walking");
       el.style.left = `${seat.x}%`;
@@ -612,4 +611,5 @@
       offeringAltar.innerHTML = "";
       counter = 0;
       walking = 0;
-   
+      updateStats();
+      addLog(
