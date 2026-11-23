@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buddha Hall Stage - Outfits & Offerings</title>
+  <title>Buddha Hall Stage - Pixel Devotees</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
     body {
@@ -16,6 +16,7 @@
       gap: 14px;
     }
 
+    /* နောက်ခံ ကျောင်းဆောင်ပုံ (1000141496.jpg) */
     .stage-wrapper {
       width: 100%;
       max-width: 390px;
@@ -24,46 +25,35 @@
       border-radius: 16px;
       overflow: hidden;
       border: 2px solid #8a6428;
-      background: linear-gradient(to bottom, #6b8cae 0%, #c8b589 36%, #7c1d24 36%, #4a0e13 100%);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+      background: url('1000141496.jpg') center / 100% 100% no-repeat, #2a1810;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.65);
     }
 
-    /* Buddha Image + Fallback */
-    .buddha-area {
+    /* ဘုရားပုံတော် အပေါ်မှ ညင်သာသော ရွှေရောင်အလင်း */
+    .buddha-glow {
       position: absolute;
-      top: 6%;
+      top: 10%;
       left: 50%;
       transform: translateX(-50%);
-      width: 125px;
-      height: 140px;
-      background: url('buddha.png') center / contain no-repeat,
-                  radial-gradient(circle at 50% 35%, #ffe680, #d49b27 70%, #8c5d0b);
-      border-radius: 16px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
+      width: 165px;
+      height: 175px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 224, 115, 0.36) 0%, rgba(255, 180, 30, 0.12) 55%, transparent 75%);
+      animation: auraPulse 3.2s ease-in-out infinite alternate;
+      pointer-events: none;
       z-index: 2;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
-    }
-    .buddha-area.no-img span {
-      background: rgba(0,0,0,0.55);
-      color: #ffeaa7;
-      font-size: 11px;
-      padding: 2px 6px;
-      border-radius: 6px;
-      margin-bottom: 6px;
     }
 
     /* ဘုရားစင်ရှေ့ ဆီမီးနှင့် ပန်း ကပ်လှူရာနေရာ */
     .offering-altar {
       position: absolute;
-      top: 28.5%;
+      top: 31.5%;
       left: 50%;
       transform: translateX(-50%);
-      width: 170px;
-      height: 24px;
-      background: rgba(45, 20, 10, 0.75);
-      border: 1px solid #e0b24c;
+      width: 155px;
+      height: 22px;
+      background: rgba(35, 16, 8, 0.72);
+      border: 1px solid rgba(224, 178, 76, 0.8);
       border-radius: 8px;
       display: flex;
       justify-content: center;
@@ -72,10 +62,8 @@
       padding: 0 6px;
       z-index: 3;
       overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
-    /* ဆီမီးခွက် နှင့် မီးတောက် Effect */
     .altar-lamp {
       position: relative;
       width: 10px;
@@ -96,8 +84,6 @@
       box-shadow: 0 0 8px #ffaa00, 0 0 12px #ff4500;
       animation: flicker 0.15s infinite alternate;
     }
-
-    /* ပန်းကပ်လှူခြင်း Effect */
     .altar-flower {
       font-size: 12px;
       line-height: 1;
@@ -105,8 +91,6 @@
       filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));
       animation: popIn 0.4s ease-out;
     }
-
-    /* ကပ်လှူစဉ် လွင့်တက်သွားသော Effect */
     .flying-offering {
       position: absolute;
       font-size: 18px;
@@ -115,118 +99,81 @@
       animation: flyToAltar 0.85s ease-out forwards;
     }
 
-    .aisle {
+    .incense-particle {
       position: absolute;
-      top: 35%;
-      bottom: 0;
+      top: 33%;
       left: 50%;
-      transform: translateX(-50%);
-      width: 14%;
-      background: linear-gradient(to bottom, #a8202a, #6e0f16);
-      border-left: 2px solid #e0b24c;
-      border-right: 2px solid #e0b24c;
-      z-index: 1;
+      font-size: 11px;
+      pointer-events: none;
+      z-index: 4;
+      animation: floatUpSparkle 2.4s ease-out forwards;
     }
 
-    /* Devotee PNG + Fallback */
+    .blessing-banner {
+      position: absolute;
+      top: 35.5%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(25, 10, 5, 0.88);
+      border: 1px solid #f3c65f;
+      color: #ffeaa7;
+      font-size: 10px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+      z-index: 9;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .blessing-banner.show { opacity: 1; }
+
+    /* Devotee Sprite (1000141498.png & 1000141499.jpg) */
     .devotee {
       position: absolute;
       width: 34px;
-      height: 42px;
-      background: url('devotee.png') center / contain no-repeat;
+      height: 44px;
+      background: url('1000141498.png') center / contain no-repeat;
+      image-rendering: pixelated;
       transform: translate(-50%, -50%);
-      transition: left 0.45s linear, top 0.45s linear, transform 0.25s ease;
       z-index: 5;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* PNG မရှိသည့်အခါ ပေါ်မည့် CSS ဇာတ်ကောင် နှင့် မြန်မာရိုးရာဝတ်စုံ ဒီဇိုင်းများ */
-    .devotee.fallback {
-      width: 20px;
-      height: 28px;
-      border-radius: 6px 6px 3px 3px;
-      position: absolute;
-    }
-    /* ဦးခေါင်း */
-    .devotee.fallback::before {
-      content: "";
-      position: absolute;
-      top: -9px;
-      width: 11px;
-      height: 11px;
-      background: #f1c27d;
-      border-radius: 50%;
-      border: 1px solid #3d2314;
+    /* ကပ်လှူနေစဉ် 1000141499.jpg သို့ ပြောင်းပြခြင်း */
+    .devotee.offering-pose {
+      background-image: url('1000141499.jpg');
+      mix-blend-mode: multiply;
+      transform: translate(-50%, -45%) scale(1.12);
     }
 
-    /* ၁။ ယောဂီဝတ်စုံ (အဖြူ + အညို) */
-    .devotee.fallback.outfit-yawgi {
-      background: linear-gradient(to bottom, #f8f9fa 45%, #5c3a21 45%);
-      border: 1px solid #d4af37;
-    }
-    /* ၂။ ရွှေပိုးထည် ဝတ်စုံ (ရွှေရောင် + အစိမ်း/ပန်းရောင်) */
-    .devotee.fallback.outfit-silk {
-      background: linear-gradient(to bottom, #ffd700 45%, #006400 45%);
-      border: 1px solid #fff3b0;
-    }
-    .devotee.fallback.outfit-silk::after {
-      content: "";
-      position: absolute;
-      top: -11px;
-      width: 13px;
-      height: 4px;
-      background: #ffd700; /* ခေါင်းပေါင်း */
-      border-radius: 3px;
-    }
-    /* ၃။ တိုက်ပုံနှင့် ပုဆိုး (အနက် + အနီရင့်) */
-    .devotee.fallback.outfit-taikpon {
-      background: linear-gradient(to bottom, #1f2833 48%, #8b0000 48%);
-      border: 1px solid #e0b24c;
-    }
-    .devotee.fallback.outfit-taikpon::after {
-      content: "";
-      position: absolute;
-      top: -11px;
-      width: 13px;
-      height: 4px;
-      background: #ffffff; /* ခေါင်းပေါင်းဖြူ */
-      border-radius: 3px;
-    }
-    /* ၄။ ချိတ်ထဘီနှင့် ဇာအင်္ကျီ (ပန်းရောင်/ဝိုင်နီ) */
-    .devotee.fallback.outfit-acheik {
-      background: linear-gradient(to bottom, #ff69b4 45%, #800020 45%);
-      border: 1px solid #ffd700;
-    }
-    .devotee.fallback.outfit-acheik::after {
-      content: "";
-      position: absolute;
-      top: -12px;
-      right: 2px;
-      width: 6px;
-      height: 6px;
-      background: #1a1a1a; /* ဆံထုံး */
-      border-radius: 50%;
-    }
-
-    /* PNG ရှိခဲ့လျှင်လည်း ဝတ်စုံအမျိုးအစားအလိုက် အရောင်အလင်း ကွဲပြားစေရန် */
-    .devotee:not(.fallback).outfit-silk { filter: drop-shadow(0 0 4px #ffd700); }
-    .devotee:not(.fallback).outfit-taikpon { filter: drop-shadow(0 0 4px #ff4d4d); }
-    .devotee:not(.fallback).outfit-acheik { filter: drop-shadow(0 0 4px #ff69b4); }
-
+    /* ဦးချ / ရှိခိုး အနေအထား */
     .devotee.bowing {
-      transform: translate(-50%, -35%) scaleY(0.72);
+      transform: translate(-50%, -35%) scaleY(0.76);
     }
+
+    /* လမ်းလျှောက်နေစဉ် ခြေလှမ်းကြွလှုပ်မှု */
+    .devotee.walking {
+      animation: walkBob 0.32s ease-in-out infinite alternate;
+    }
+
+    /* ဝတ်စုံအလိုက် အရောင်အလင်း ကွဲပြားမှု */
+    .devotee.outfit-silk { filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.85)); }
+    .devotee.outfit-taikpon { filter: drop-shadow(0 0 4px rgba(255, 90, 90, 0.85)); }
+    .devotee.outfit-acheik { filter: drop-shadow(0 0 4px rgba(255, 105, 180, 0.85)); }
+
     .name-tag {
       position: absolute;
-      top: -22px;
+      top: -16px;
       font-size: 9px;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0,0,0,0.78);
       color: #ffeaa7;
       padding: 1px 4px;
       border-radius: 4px;
       white-space: nowrap;
+      mix-blend-mode: normal;
     }
     .hide-names .name-tag { display: none; }
 
@@ -307,7 +254,18 @@
       overflow-y: auto;
     }
 
-    /* Animations */
+    @keyframes auraPulse {
+      0% { transform: translateX(-50%) scale(0.95); opacity: 0.65; }
+      100% { transform: translateX(-50%) scale(1.08); opacity: 1; }
+    }
+    @keyframes walkBob {
+      0% { margin-top: 0px; }
+      100% { margin-top: -3px; }
+    }
+    @keyframes floatUpSparkle {
+      0% { transform: translate(-50%, 0) scale(0.7); opacity: 0.9; }
+      100% { transform: translate(calc(-50% + var(--drift, 0px)), -55px) scale(1.2); opacity: 0; }
+    }
     @keyframes flicker {
       0% { transform: scale(1) rotate(-3deg); opacity: 0.9; }
       100% { transform: scale(1.15) rotate(3deg); opacity: 1; }
@@ -317,22 +275,21 @@
       100% { transform: scale(1); opacity: 1; }
     }
     @keyframes flyToAltar {
-      0% { top: 38%; left: 50%; opacity: 1; transform: translate(-50%, -50%) scale(0.8); }
-      100% { top: 29%; left: 50%; opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+      0% { top: 41%; left: 50%; opacity: 1; transform: translate(-50%, -50%) scale(0.8); }
+      100% { top: 32%; left: 50%; opacity: 0; transform: translate(-50%, -50%) scale(1.35); }
     }
   </style>
 </head>
 <body>
 
   <div class="stage-wrapper" id="stage">
-    <div class="buddha-area no-img" id="buddhaBox"><span>buddha.png</span></div>
-    <!-- ဆီမီးနှင့် ပန်း ကပ်လှူရာ စင် -->
+    <div class="buddha-glow"></div>
     <div class="offering-altar" id="offeringAltar" title="ကပ်လှူထားသော ဆီမီးနှင့် ပန်းများ"></div>
-    <div class="aisle"></div>
+    <div class="blessing-banner" id="blessingBanner"></div>
   </div>
 
   <div class="panel">
-    <h2>Buddha Hall Stage (ရိုးရာဝတ်စုံ + ဆီမီး/ပန်း)</h2>
+    <h2>Buddha Hall Stage (Pixel Devotees + Altar)</h2>
     <p class="hint">
       နာမည်၊ ဝတ်စုံနှင့် ကပ်လှူမည့်အရာ ရွေးချယ်ပြီး Enter နှိပ်ပါ။
     </p>
@@ -341,7 +298,6 @@
       <input type="text" class="name-input" id="donorName" placeholder="အလှူရှင် နာမည် (ဥပမာ- မောင်မောင်)" />
     </div>
 
-    <!-- ဝတ်စုံနှင့် ကပ်လှူဖွယ်ရာ ရွေးချယ်ရန် -->
     <div class="grid-2">
       <select class="select-box" id="outfitSelect">
         <option value="random">👗 ဝတ်စုံ: ကျပန်း (Random)</option>
@@ -391,13 +347,13 @@
       </label>
     </div>
 
-    <div class="log" id="logBox">[Ready] ရိုးရာဝတ်စုံများနှင့် ဆီမီး/ပန်း ကပ်လှူစနစ် အသင့်ဖြစ်ပါပြီ။</div>
+    <div class="log" id="logBox">[Ready] ပုံ ၃ ပုံဖြင့် ဘုရားကျောင်းဆောင် စနစ် အသင့်ဖြစ်ပါပြီ။</div>
   </div>
 
   <script>
     const stage = document.getElementById("stage");
-    const buddhaBox = document.getElementById("buddhaBox");
     const offeringAltar = document.getElementById("offeringAltar");
+    const blessingBanner = document.getElementById("blessingBanner");
     const donorInput = document.getElementById("donorName");
     const outfitSelect = document.getElementById("outfitSelect");
     const offeringSelect = document.getElementById("offeringSelect");
@@ -416,7 +372,7 @@
     let counter = 0;
     let walking = 0;
     let speed = 1.0;
-    let hasDevoteeImg = false;
+    let bannerTimer = null;
 
     const OUTFIT_LIST = ["outfit-yawgi", "outfit-silk", "outfit-taikpon", "outfit-acheik"];
     const OUTFIT_NAMES = {
@@ -426,19 +382,6 @@
       "outfit-acheik": "ချိတ်ထဘီဝတ်စုံ"
     };
 
-    // Check if buddha.png & devotee.png exist
-    const testBuddha = new Image();
-    testBuddha.src = "buddha.png";
-    testBuddha.onload = () => {
-      buddhaBox.classList.remove("no-img");
-      buddhaBox.innerHTML = "";
-    };
-
-    const testDevotee = new Image();
-    testDevotee.src = "devotee.png";
-    testDevotee.onload = () => { hasDevoteeImg = true; };
-
-    // Voice Queue
     const speechQueue = [];
     let isSpeaking = false;
 
@@ -467,12 +410,27 @@
       window.speechSynthesis.speak(msg);
     }
 
-    // ဆီမီး / ပန်း ကပ်လှူသည့် Effect
+    function showBlessing(text) {
+      blessingBanner.textContent = text;
+      blessingBanner.classList.add("show");
+      clearTimeout(bannerTimer);
+      bannerTimer = setTimeout(() => {
+        blessingBanner.classList.remove("show");
+      }, 3000);
+    }
+
+    setInterval(() => {
+      const sp = document.createElement("div");
+      sp.className = "incense-particle";
+      sp.textContent = Math.random() > 0.45 ? "✦" : "☁️";
+      sp.style.setProperty("--drift", `${(Math.random() * 34 - 17).toFixed(0)}px`);
+      stage.appendChild(sp);
+      setTimeout(() => sp.remove(), 2400);
+    }, 800);
+
     function triggerOfferingEffect(type) {
       const itemsToOffer = type === "both" ? ["lamp", "flower"] : [type];
-
       itemsToOffer.forEach((item, idx) => {
-        // ၁။ လွင့်တက်သွားသော Animation
         const flyer = document.createElement("div");
         flyer.className = "flying-offering";
         flyer.textContent = item === "lamp" ? "🕯️" : "🪷";
@@ -480,12 +438,10 @@
         stage.appendChild(flyer);
         setTimeout(() => flyer.remove(), 850);
 
-        // ၂။ စင်ပေါ်တွင် တင်ကျန်ရစ်စေခြင်း (အများဆုံး ၁၂ ခုအထိ)
         setTimeout(() => {
           if (offeringAltar.children.length >= 12) {
             offeringAltar.removeChild(offeringAltar.firstChild);
           }
-
           if (item === "lamp") {
             const lamp = document.createElement("div");
             lamp.className = "altar-lamp";
@@ -504,18 +460,19 @@
       });
     }
 
+    // နောက်ခံပုံထဲက ဘယ်/ညာ ကော်ဇောထိုင်နေရာများနှင့် ကိုက်ညီအောင် ညှိထားသည်
     function buildSeats() {
       seats.length = 0;
       const rows = 10;
       const cols = 4;
       for (let r = 0; r < rows; r++) {
-        const y = 41 + r * 5.5;
+        const y = 50 + r * 4.6;
         for (let c = 0; c < cols; c++) {
-          const x = 18 + c * 6.5;
+          const x = 14 + c * 6.8;
           seats.push({ side: "L", index: r * cols + c + 1, x, y, taken: false });
         }
         for (let c = 0; c < cols; c++) {
-          const x = 61 + c * 6.5;
+          const x = 60 + c * 6.8;
           seats.push({ side: "R", index: r * cols + c + 1, x, y, taken: false });
         }
       }
@@ -551,7 +508,6 @@
       const name = typedName || `ဧည့်သည် #${counter}`;
       if (typedName) donorInput.value = "";
 
-      // ဝတ်စုံ ရွေးချယ်မှု
       let chosenOutfit = outfitSelect.value;
       if (chosenOutfit === "random") {
         chosenOutfit = OUTFIT_LIST[Math.floor(Math.random() * OUTFIT_LIST.length)];
@@ -559,33 +515,42 @@
       const chosenOffering = offeringSelect.value;
 
       const el = document.createElement("div");
-      el.className = hasDevoteeImg 
-        ? `devotee ${chosenOutfit}` 
-        : `devotee fallback ${chosenOutfit}`;
+      el.className = `devotee ${chosenOutfit} walking`;
       el.innerHTML = `<span class="name-tag">${name}</span>`;
-
       el.style.left = "50%";
       el.style.top = "96%";
       stage.appendChild(el);
       devotees.push(el);
 
-      // လျှောက်လမ်းအတိုင်း ဘုရားရှေ့သို့ လျှောက်လာခြင်း
+      // ၁။ ကော်ဇောနီအတိုင်း ရှေ့သို့ လျှောက်လာခြင်း (1000141498.png)
+      const moveMs = Math.round(1200 / speed);
+      el.style.transition = `left ${moveMs}ms linear, top ${moveMs}ms linear, transform 0.25s ease`;
       el.style.left = "50%";
-      el.style.top = "38%";
-      await wait(1100);
+      el.style.top = "42%";
+      await wait(1200);
 
-      // ဦးချခြင်း + ဆီမီး/ပန်း ကပ်လှူခြင်း
-      el.classList.add("bowing");
+      // ၂။ ဆီမီး/ပန်း ကပ်လှူခြင်း (1000141499.jpg) + ဦးချခြင်း
+      el.classList.remove("walking");
+      el.classList.add("offering-pose");
       triggerOfferingEffect(chosenOffering);
-      addLog(`${name} (${OUTFIT_NAMES[chosenOutfit]}) ကပ်လှူဦးချနေပါသည်။`);
+      showBlessing(`🙏 ${name} — ဆီမီးပန်း ကပ်လှူပြီး ကျန်းမာချမ်းသာပါစေ`);
+      addLog(`${name} (${OUTFIT_NAMES[chosenOutfit]}) ကပ်လှူနေပါသည်။`);
       speakPrayer(name, chosenOffering);
-      await wait(950);
+      await wait(850);
+
+      el.classList.remove("offering-pose");
+      el.classList.add("bowing");
+      await wait(550);
       el.classList.remove("bowing");
 
-      // သတ်မှတ်ထိုင်ခုံသို့ သွားထိုင်ခြင်း
+      // ၃။ သတ်မှတ်ထိုင်ခုံသို့ သွားထိုင်ခြင်း
+      const seatMs = Math.round(950 / speed);
+      el.style.transition = `left ${seatMs}ms linear, top ${seatMs}ms linear, transform 0.25s ease`;
+      el.classList.add("walking");
       el.style.left = `${seat.x}%`;
       el.style.top = `${seat.y}%`;
-      await wait(900);
+      await wait(950);
+      el.classList.remove("walking");
 
       walking--;
       updateStats();
@@ -593,8 +558,6 @@
     }
 
     enterBtn.addEventListener("click", spawnDevotee);
-
-    // Enter ခလုတ်နှိပ်ရုံဖြင့် တန်းဝင်နိုင်ရန်
     donorInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") spawnDevotee();
     });
@@ -630,5 +593,4 @@
     updateStats();
   </script>
 </body>
-                                                        </html>
-
+</html>
