@@ -162,6 +162,7 @@
       width: 36px;
       height: 46px;
       background: url('buddha.png') center / contain no-repeat;
+      mix-blend-mode: multiply;
       image-rendering: pixelated;
       transform: translate(-50%, -50%) scale(var(--dev-scale, 1));
       z-index: 5;
@@ -170,15 +171,17 @@
       align-items: center;
     }
 
-    /* ကပ်လှူနေစဉ် ပုံသို့ ပြောင်းပြခြင်း */
+    /* ကပ်လှူနေစဉ် 676049335_1795367408068145.jpg သို့ ပြောင်းပြခြင်း */
     .devotee.offering-pose {
-      background-image: url('676049535_1760674368304145_676049535_1760674368304145.png');
+      background-image: url('676049335_1795367408068145.jpg');
+      mix-blend-mode: multiply;
       transform: translate(-50%, -46%) scale(calc(var(--dev-scale, 1) * 1.12));
     }
 
     /* ဦးချ / ရှိခိုး အနေအထား */
     .devotee.bowing {
       background-image: url('buddha.png');
+      mix-blend-mode: multiply;
       transform: translate(-50%, -36%) scale(calc(var(--dev-scale, 1) * 0.92));
     }
 
@@ -201,6 +204,7 @@
       padding: 1px 4px;
       border-radius: 4px;
       white-space: nowrap;
+      mix-blend-mode: normal;
     }
     .hide-names .name-tag { display: none; }
 
@@ -608,8 +612,4 @@
       offeringAltar.innerHTML = "";
       counter = 0;
       walking = 0;
-      updateStats();
-      addLog("နေရာနှင့် ကပ်လှူထားသည်များ ရှင်းလင်းပြီးပါပြီ။");
-    });
-
-    speedSlider.addEventListener("in
+   
