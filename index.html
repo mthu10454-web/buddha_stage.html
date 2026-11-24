@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buddha Hall Stage - 9:16 TikTok Live</title>
+  <title>Buddha Hall Stage</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
+      margin: 0;
       background: #12100e;
       color: #f5efe6;
+      font-family: system-ui, -apple-system, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -18,247 +23,503 @@
 
     .stage-wrapper {
       width: 100%;
-      max-width: 390px;
+      max-width: 400px;
       aspect-ratio: 9 / 16;
       position: relative;
       border-radius: 16px;
       overflow: hidden;
       border: 2px solid #8a6428;
-      background: #1c1108;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.65);
+      background: url("bg_hall.png") center / cover no-repeat,
+                  linear-gradient(180deg, #3b2410 0%, #1d1108 100%);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
     }
 
-    /* ၁။ ဘုရားရှင် + ပလ္လင် + နောက်ခံ */
-    .hall-bg {
+    .buddha-statue {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 1;
+      top: 4%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 66%;
+      max-height: 36%;
+      object-fit: contain;
+      z-index: 3;
       pointer-events: none;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.75));
     }
 
-    /* ၂။ ဘယ်/ညာ ၂ ဖက် ထိုင်မည့် ကောဇောများ */
-    .side-carpets {
+    .buddha-glow {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 54%;
-      object-fit: fill;
-      mix-blend-mode: multiply;
+      top: 6%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 215, 115, 0.35), rgba(255, 180, 30, 0) 70%);
+      animation: auraPulse 3s ease-in-out infinite alternate;
+      pointer-events: none;
       z-index: 2;
-      pointer-events: none;
     }
 
-    /* ၃။ အလယ် ကောဇောတန်း */
-    .center-carpet {
+    .offering-altar {
+      position: absolute;
+      top: 37%;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 180px;
+      max-width: 90%;
+      min-height: 26px;
+      background: rgba(35, 16, 8, 0.88);
+      border: 1px solid rgba(224, 178, 76, 0.85);
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      z-index: 4;
+      font-size: 13px;
+      color: #ffe8a3;
+    }
+
+    .blessing-banner {
+      position: absolute;
+      top: 43%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(25, 10, 5, 0.92);
+      border: 1px solid #f3c65f;
+      color: #ffeaa7;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+      z-index: 9;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .blessing-banner.show {
+      opacity: 1;
+    }
+
+    .carpet-center {
       position: absolute;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 22%;
-      height: 53%;
+      width: 24%;
+      height: 54%;
       object-fit: fill;
-      mix-blend-mode: multiply;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .carpet-sides {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 82%;
+      height: 50%;
+      object-fit: fill;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.92;
+    }
+
+    .seat-spot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px dashed rgba(243, 198, 95, 0.7);
+      background: rgba(255, 215, 120, 0.14);
+      transform: translate(-50%, -50%);
       z-index: 3;
       pointer-events: none;
     }
 
-    /* ၄။ လူတစ်ဦးချင်းစီ (မိန်းမ / ယောကျ်ားလေး) */
+    .seat-spot.taken {
+      border-color: rgba(243, 198, 95, 0.95);
+      background: rgba(243, 198, 95, 0.35);
+    }
+
+    .hide-seats .seat-spot {
+      display: none;
+    }
+
     .devotee {
       position: absolute;
-      width: 38px;
-      height: 38px;
-      background-size: contain;
-      background-position: center bottom;
-      background-repeat: no-repeat;
-      mix-blend-mode: multiply;
-      transform: translate(-50%, -50%) scale(var(--dev-scale, 1));
+      width: 44px;
+      height: 44px;
+      transform: translate(-50%, -50%);
       z-index: 6;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
     }
-    .devotee.female { background-image: url('woman_bow.png'); }
-    .devotee.male { background-image: url('man_bow.png'); }
-    .devotee.walking { animation: walkBob 0.3s ease-in-out infinite alternate; }
+
+    .devotee img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .devotee.bowing img {
+      animation: bowMotion 0.9s ease-in-out infinite alternate;
+    }
 
     .name-tag {
       position: absolute;
-      top: -14px;
-      font-size: 9px;
+      top: -15px;
       background: rgba(0, 0, 0, 0.85);
       color: #ffeaa7;
-      padding: 1px 4px;
+      font-size: 9px;
+      padding: 1px 5px;
       border-radius: 4px;
       white-space: nowrap;
-      mix-blend-mode: normal;
+    }
+
+    .hide-names .name-tag {
+      display: none;
     }
 
     .panel {
       width: 100%;
-      max-width: 390px;
+      max-width: 400px;
       background: #1e1b18;
       border: 1px solid #3b332a;
       border-radius: 14px;
-      padding: 12px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
-    .row { display: flex; gap: 8px; }
-    input, select {
+
+    .panel h2 {
+      margin: 0;
+      font-size: 16px;
+      color: #f7d788;
+    }
+
+    .hint {
+      margin: 0;
+      font-size: 12px;
+      color: #c7bdb0;
+    }
+
+    .input-row,
+    .grid-2 {
+      display: flex;
+      gap: 8px;
+    }
+
+    .input-row input,
+    .grid-2 select {
       flex: 1;
-      padding: 8px;
+      padding: 9px;
       border-radius: 8px;
       border: 1px solid #52473a;
       background: #14110f;
       color: #fff;
       font-size: 12px;
     }
-    .btn-enter {
+
+    .btn-main {
       width: 100%;
       padding: 11px;
+      font-size: 14px;
+      font-weight: 700;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       background: linear-gradient(90deg, #e5a93c, #c9821e);
       color: #1a1205;
-      font-weight: 700;
       cursor: pointer;
     }
-    .btn-clear {
-      width: 100%;
-      padding: 8px;
+
+    .btn-sec {
+      flex: 1;
+      padding: 9px;
+      font-size: 12px;
+      font-weight: 600;
       border: 1px solid #52473a;
       border-radius: 8px;
       background: #2a2520;
       color: #f5efe6;
-      font-size: 12px;
       cursor: pointer;
     }
 
-    @keyframes walkBob {
-      0% { margin-top: 0px; }
-      100% { margin-top: -3px; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      background: #151210;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .log {
+      background: #14110f;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 11px;
+      color: #9be39b;
+      max-height: 85px;
+      overflow-y: auto;
+    }
+
+    @keyframes auraPulse {
+      0% { transform: translateX(-50%) scale(0.95); opacity: 0.65; }
+      100% { transform: translateX(-50%) scale(1.08); opacity: 1; }
+    }
+
+    @keyframes bowMotion {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(2px) scale(1.06); }
     }
   </style>
 </head>
 <body>
-
-  <div class="stage-wrapper" id="stage">
-    <img class="hall-bg" src="bg_hall.png" alt="ဘုရားရှင် ပလ္လင်နှင့် နောက်ခံ" />
-    <img class="side-carpets" src="carpet_sides.png" alt="ဘယ်ညာ ကောဇောများ" />
-    <img class="center-carpet" src="carpet_center.png" alt="အလယ် ကောဇောတန်း" />
+  <div class="stage-wrapper hide-seats" id="stage">
+    <div class="buddha-glow"></div>
+    <img class="buddha-statue" src="man_bow.png" alt="ဘုရားဆင်းတု" id="buddhaImg" />
+    <img class="carpet-sides" src="carpet_sides.png" alt="ဘေးကော်ဇော" />
+    <img class="carpet-center" src="carpet_center.png" alt="အလယ်ကော်ဇော" />
+    <div class="offering-altar" id="offeringAltar">🕯️ 🌸 ပူဇော်ရန် အဆင်သင့်</div>
+    <div class="blessing-banner" id="blessingBanner"></div>
   </div>
 
   <div class="panel">
-    <div class="row">
-      <input type="text" id="donorName" placeholder="နာမည်ထည့်ပါ (ဥပမာ- မောင်မောင်)" />
+    <h2>Buddha Hall Stage</h2>
+    <p class="hint">နာမည် ထည့်ပြီး Enter နှိပ်ပါ သို့မဟုတ် ခလုတ်နှိပ်ပါ</p>
+
+    <div class="input-row">
+      <input type="text" id="donorInput" placeholder="နာမည် ထည့်ပါ (ဥပမာ - မောင်မောင်)" />
+    </div>
+
+    <div class="grid-2">
       <select id="genderSelect">
-        <option value="random">ကျပန်း (မ/ကျား)</option>
-        <option value="female">မိန်းမ (၁ ဦး)</option>
-        <option value="male">ယောကျ်ားလေး (၁ ဦး)</option>
+        <option value="woman">👩 အမျိုးသမီး (woman_bow.png)</option>
+        <option value="man">👨 အမျိုးသား (man_bow.png)</option>
+      </select>
+      <select id="offeringSelect">
+        <option value="both">🕯️🌸 ဆီမီး + ပန်း</option>
+        <option value="lamp">🕯️ ဆီမီး</option>
+        <option value="flower">🌸 ပန်း</option>
       </select>
     </div>
-    <button type="button" class="btn-enter" id="enterBtn">✦ Enter (ဝင်ရောက်ဦးချ)</button>
-    <button type="button" class="btn-clear" id="clearBtn">အားလုံးရှင်း (Clear)</button>
+
+    <button type="button" class="btn-main" id="enterBtn">✨ Enter (ဝင်ရောက်ရှိခိုးရန်)</button>
+
+    <div class="grid-2">
+      <button type="button" class="btn-sec" id="bowAllBtn">🙏 All Bow (အားလုံးရှိခိုး)</button>
+      <button type="button" class="btn-sec" id="clearBtn">🗑️ Clear All (အားလုံးရှင်း)</button>
+    </div>
+
+    <div class="stats">
+      <div>ဘယ်ဘက်: <strong id="leftCount">0</strong> / 20</div>
+      <div>ညာဘက်: <strong id="rightCount">0</strong> / 20</div>
+      <div>ရှိခိုးနေသူ: <strong id="bowingCount">0</strong></div>
+    </div>
+
+    <div class="control-row">
+      <span>အမြန်နှုန်း: <strong id="speedVal">1.0x</strong></span>
+      <input type="range" id="speedSlider" min="0.5" max="2.5" step="0.1" value="1.0" />
+    </div>
+
+    <div class="control-row">
+      <label><input type="checkbox" id="nameToggle" checked /> နာမည်ပြရန်</label>
+      <label><input type="checkbox" id="seatToggle" /> နေရာကွက်ပြရန်</label>
+    </div>
+
+    <div class="log" id="logBox">လုပ်ဆောင်မှုများ စတင်ရန် အဆင်သင့်ဖြစ်ပါပြီ။</div>
   </div>
 
   <script>
     const stage = document.getElementById("stage");
-    const donorInput = document.getElementById("donorName");
+    const offeringAltar = document.getElementById("offeringAltar");
+    const blessingBanner = document.getElementById("blessingBanner");
+    const donorInput = document.getElementById("donorInput");
     const genderSelect = document.getElementById("genderSelect");
+    const offeringSelect = document.getElementById("offeringSelect");
     const enterBtn = document.getElementById("enterBtn");
+    const bowAllBtn = document.getElementById("bowAllBtn");
     const clearBtn = document.getElementById("clearBtn");
+    const speedSlider = document.getElementById("speedSlider");
+    const speedVal = document.getElementById("speedVal");
+    const nameToggle = document.getElementById("nameToggle");
+    const seatToggle = document.getElementById("seatToggle");
+    const logBox = document.getElementById("logBox");
 
-    const seats = [];
-    let spawned = [];
-    let count = 0;
+    const TOTAL_PER_SIDE = 20;
+    let seats = [];
+    let devotees = [];
+    let counter = 1;
+    let speed = 1.0;
+    let bannerTimer = null;
 
     function buildSeats() {
-      seats.length = 0;
-      const rows = 8;
-      const cols = 3;
+      seats = [];
+      stage.querySelectorAll(".seat-spot").forEach(el => el.remove());
+
+      const rows = 5;
+      const cols = 4;
+
       for (let r = 0; r < rows; r++) {
-        const t = r / (rows - 1); // 0 = အပေါ်ဆုံးတန်း, 1 = အောက်ဆုံးတန်း
-        const y = 51 + t * 41;
-        const scale = Number((0.55 + t * 0.52).toFixed(2));
-        const gap = 5.2 + t * 2.5;
-
-        // ဘယ်ဘက် ကောဇောပေါ် နေရာများ
-        const leftAnchor = 33 - t * 14;
         for (let c = 0; c < cols; c++) {
-          const x = leftAnchor - (cols - 1 - c) * gap;
-          seats.push({ side: "L", x, y, scale, taken: false });
-        }
+          const leftX = 14 + c * 7.5;
+          const rightX = 63.5 + c * 7.5;
+          const y = 56 + r * 8.2;
 
-        // ညာဘက် ကောဇောပေါ် နေရာများ
-        const rightAnchor = 67 + t * 14;
-        for (let c = 0; c < cols; c++) {
-          const x = rightAnchor + c * gap;
-          seats.push({ side: "R", x, y, scale, taken: false });
+          const leftSpot = document.createElement("div");
+          leftSpot.className = "seat-spot";
+          leftSpot.style.left = `${leftX}%`;
+          leftSpot.style.top = `${y}%`;
+          stage.appendChild(leftSpot);
+          seats.push({ side: "ဘယ်", x: leftX, y, taken: false, el: leftSpot });
+
+          const rightSpot = document.createElement("div");
+          rightSpot.className = "seat-spot";
+          rightSpot.style.left = `${rightX}%`;
+          rightSpot.style.top = `${y}%`;
+          stage.appendChild(rightSpot);
+          seats.push({ side: "ညာ", x: rightX, y, taken: false, el: rightSpot });
         }
       }
     }
 
-    async function handleEnter() {
-      const seat = seats.find(s => !s.taken);
-      if (!seat) return;
-      seat.taken = true;
-      count++;
+    function updateStats() {
+      const leftTaken = seats.filter(s => s.side === "ဘယ်" && s.taken).length;
+      const rightTaken = seats.filter(s => s.side === "ညာ" && s.taken).length;
+      const bowingCount = devotees.filter(d => d.el.classList.contains("bowing")).length;
 
-      const name = donorInput.value.trim() || `ဧည့်သည် #${count}`;
-      donorInput.value = "";
-      const gender = genderSelect.value === "random"
-        ? (Math.random() > 0.5 ? "female" : "male")
-        : genderSelect.value;
-
-      const el = document.createElement("div");
-      el.className = `devotee ${gender} walking`;
-      el.innerHTML = `<span class="name-tag">${name}</span>`;
-      el.style.left = "50%";
-      el.style.top = "96%";
-      el.style.zIndex = "10";
-      el.style.setProperty("--dev-scale", "1.05");
-      stage.appendChild(el);
-      spawned.push(el);
-
-      // အလယ်ကောဇောလမ်းကနေ ရှေ့သို့ လျှောက်လာခြင်း
-      await new Promise(r => setTimeout(r, 50));
-      el.style.transition = "left 900ms linear, top 900ms linear, transform 0.25s ease";
-      el.style.left = "50%";
-      el.style.top = "49%";
-      el.style.setProperty("--dev-scale", "0.62");
-      await new Promise(r => setTimeout(r, 950));
-
-      // သတ်မှတ်ထားသော ဘယ်/ညာ ကောဇောနေရာသို့ ဝင်ထိုင်ခြင်း
-      el.style.transition = "left 850ms ease-in-out, top 850ms ease-in-out, transform 0.25s ease";
-      el.style.left = `${seat.x}%`;
-      el.style.top = `${seat.y}%`;
-      el.style.setProperty("--dev-scale", String(seat.scale));
-      await new Promise(r => setTimeout(r, 880));
-
-      el.classList.remove("walking");
-      el.style.zIndex = String(4 + Math.round(seat.y / 10));
+      document.getElementById("leftCount").textContent = leftTaken;
+      document.getElementById("rightCount").textContent = rightTaken;
+      document.getElementById("bowingCount").textContent = bowingCount;
     }
 
-    enterBtn.addEventListener("click", handleEnter);
+    function addLog(msg) {
+      const time = new Date().toLocaleTimeString("en-GB", { hour12: false });
+      logBox.innerHTML = `<div>[${time}] ${msg}</div>` + logBox.innerHTML;
+    }
+
+    function showBlessing(text) {
+      blessingBanner.textContent = text;
+      blessingBanner.classList.add("show");
+      clearTimeout(bannerTimer);
+      bannerTimer = setTimeout(() => {
+        blessingBanner.classList.remove("show");
+      }, 2800);
+    }
+
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms / speed));
+    }
+
+    async function spawnDevotee() {
+      const seat = seats.find(s => !s.taken);
+      if (!seat) {
+        addLog("⚠️ နေရာအားလုံး ပြည့်သွားပါပြီ။");
+        return;
+      }
+
+      seat.taken = true;
+      seat.el.classList.add("taken");
+
+      const name = donorInput.value.trim() || `ဧည့်သည် ${counter++}`;
+      donorInput.value = "";
+
+      const gender = genderSelect.value;
+      const imgSrc = gender === "man" ? "man_bow.png" : "woman_bow.png";
+      const offering = offeringSelect.value;
+
+      const el = document.createElement("div");
+      el.className = "devotee";
+      el.style.left = "50%";
+      el.style.top = "92%";
+      el.innerHTML = `<span class="name-tag">${name}</span><img src="${imgSrc}" alt="${name}" />`;
+      stage.appendChild(el);
+      devotees.push({ el, seat });
+
+      el.style.transition = `left ${700 / speed}ms ease, top ${700 / speed}ms ease`;
+      el.style.left = "50%";
+      el.style.top = "48%";
+      await wait(750);
+
+      const offeringText =
+        offering === "lamp" ? "🕯️ ဆီမီး" :
+        offering === "flower" ? "🌸 ပန်း" : "🕯️🌸 ဆီမီး + ပန်း";
+      offeringAltar.textContent = `${offeringText} (${name})`;
+      showBlessing(`🙏 ${name} - ${offeringText} ပူဇော်ပြီးပါပြီ`);
+      addLog(`${name} သည် ${offeringText} ပူဇော်ခဲ့သည်။`);
+      await wait(600);
+
+      el.style.transition = `left ${900 / speed}ms ease-in-out, top ${900 / speed}ms ease-in-out`;
+      el.style.left = `${seat.x}%`;
+      el.style.top = `${seat.y}%`;
+      await wait(950);
+
+      el.classList.add("bowing");
+      updateStats();
+      addLog(`${name} သည် ${seat.side}ဘက် နေရာတွင် ရှိခိုးနေပါသည်။`);
+    }
+
+    enterBtn.addEventListener("click", spawnDevotee);
     donorInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        handleEnter();
+        spawnDevotee();
       }
     });
 
+    bowAllBtn.addEventListener("click", () => {
+      devotees.forEach(d => d.el.classList.add("bowing"));
+      updateStats();
+      showBlessing("🙏 အားလုံး ညီညာစွာ ရှိခိုးနေကြပါသည်");
+      addLog("ရှိနေသူအားလုံး ရှိခိုးမှု ပြုလုပ်နေပါသည်။");
+    });
+
     clearBtn.addEventListener("click", () => {
-      spawned.forEach(d => d.remove());
-      spawned = [];
-      seats.forEach(s => s.taken = false);
-      count = 0;
+      devotees.forEach(d => d.el.remove());
+      devotees = [];
+      seats.forEach(s => {
+        s.taken = false;
+        s.el.classList.remove("taken");
+      });
+      offeringAltar.textContent = "🕯️ 🌸 ပူဇော်ရန် အဆင်သင့်";
+      updateStats();
+      addLog("နေရာများအားလုံးကို ရှင်းလင်းလိုက်ပါပြီ။");
+    });
+
+    speedSlider.addEventListener("input", () => {
+      speed = parseFloat(speedSlider.value);
+      speedVal.textContent = `${speed.toFixed(1)}x`;
+    });
+
+    nameToggle.addEventListener("change", () => {
+      stage.classList.toggle("hide-names", !nameToggle.checked);
+    });
+
+    seatToggle.addEventListener("change", () => {
+      stage.classList.toggle("hide-seats", !seatToggle.checked);
     });
 
     buildSeats();
+    updateStats();
   </script>
 </body>
   </html>
