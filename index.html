@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI TikTok Live Blessing Stage</title>
+  <title>AI TikTok Live ဆုတောင်းပူဇော်ပွဲ</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -26,94 +26,116 @@
       border-radius: 14px;
       overflow: hidden;
       border: 2px solid #b38738;
-      background: url("bg_hall.png") center / cover no-repeat,
+      background: url("bg_hall.png") center / 100% 100% no-repeat,
                   linear-gradient(180deg, #2e1b0d 0%, #120a05 100%);
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.75);
     }
 
-    .carpet-sides {
+    .offering-flash {
       position: absolute;
-      bottom: 0;
+      top: 41%;
       left: 50%;
-      transform: translateX(-50%);
-      width: 88%;
-      height: 56%;
-      object-fit: fill;
-      z-index: 1;
+      transform: translate(-50%, -50%);
+      background: rgba(25, 11, 4, 0.88);
+      border: 1px solid #f5c85c;
+      color: #ffe8a3;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      z-index: 15;
+      opacity: 0;
       pointer-events: none;
+      transition: opacity 0.25s ease;
+      white-space: nowrap;
     }
 
-    .carpet-center {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 20%;
-      height: 58%;
-      object-fit: fill;
-      z-index: 2;
-      pointer-events: none;
+    .offering-flash.show {
+      opacity: 1;
     }
 
     .blessing-card {
       position: absolute;
-      top: 38%;
+      top: 47%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 90%;
-      background: rgba(20, 10, 4, 0.9);
+      width: 92%;
+      background: rgba(18, 8, 3, 0.92);
       border: 1px solid #f0c25b;
       border-radius: 12px;
       padding: 8px 12px;
       text-align: center;
-      z-index: 20;
+      z-index: 25;
       opacity: 0;
       transition: opacity 0.25s ease;
       pointer-events: none;
     }
 
-    .blessing-card.active { opacity: 1; }
-    .blessing-title { font-size: 12px; color: #ffd97d; font-weight: 700; }
-    .blessing-text { font-size: 11px; color: #fff7e6; margin-top: 2px; line-height: 1.35; }
+    .blessing-card.active {
+      opacity: 1;
+    }
+
+    .blessing-title {
+      font-size: 12px;
+      color: #ffd97d;
+      font-weight: 700;
+    }
+
+    .blessing-text {
+      font-size: 11.5px;
+      color: #fff7e6;
+      margin-top: 3px;
+      line-height: 1.45;
+    }
 
     .devotee {
       position: absolute;
       width: 34px;
       height: 34px;
       transform: translate(-50%, -50%);
-      z-index: 10;
+      z-index: 12;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-end;
-      transition: left 0.85s ease, top 0.85s ease;
+      justify-content: center;
+      transition: left 0.85s ease-in-out, top 0.85s ease-in-out;
     }
 
     .devotee img {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       object-fit: contain;
       pointer-events: none;
+      transform: rotate(0deg);
+      transition: transform 0.3s ease;
+    }
+
+    .devotee.walking img {
+      animation: walkStep 0.35s ease-in-out infinite alternate;
     }
 
     .devotee.bowing img {
-      animation: bowAnim 0.85s ease-in-out infinite alternate;
+      animation: bowProstrate 0.9s ease-in-out infinite alternate;
     }
 
     .devotee-name {
       position: absolute;
       top: -13px;
-      background: rgba(0, 0, 0, 0.78);
+      background: rgba(0, 0, 0, 0.82);
       color: #ffe599;
-      font-size: 8px;
-      padding: 1px 4px;
+      font-size: 8.5px;
+      padding: 1px 5px;
       border-radius: 4px;
       white-space: nowrap;
     }
 
-    @keyframes bowAnim {
-      0% { transform: translateY(0) scale(1); }
-      100% { transform: translateY(2px) scale(1.06); }
+    @keyframes walkStep {
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(-2px) scale(1.04); }
+    }
+
+    @keyframes bowProstrate {
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(2px) scale(0.92); }
     }
 
     .controls {
@@ -128,7 +150,11 @@
       gap: 8px;
     }
 
-    .row { display: flex; gap: 8px; }
+    .row {
+      display: flex;
+      gap: 8px;
+    }
+
     input, select, button {
       border-radius: 8px;
       border: 1px solid #4c4033;
@@ -148,6 +174,7 @@
       font-weight: 700;
       border: none;
       cursor: pointer;
+      white-space: nowrap;
     }
 
     .btn-dark {
@@ -162,15 +189,15 @@
       padding: 8px;
       font-size: 11px;
       color: #a9e5a9;
-      max-height: 90px;
+      max-height: 95px;
       overflow-y: auto;
+      line-height: 1.45;
     }
   </style>
 </head>
 <body>
   <div class="stage" id="stage">
-    <img class="carpet-sides" src="carpet_sides.png" alt="Side Carpets" />
-    <img class="carpet-center" src="carpet_center.png" alt="Center Carpet" />
+    <div class="offering-flash" id="offeringFlash"></div>
     <div class="blessing-card" id="blessingCard">
       <div class="blessing-title" id="blessingTitle"></div>
       <div class="blessing-text" id="blessingText"></div>
@@ -179,31 +206,32 @@
 
   <div class="controls">
     <div class="row">
-      <input id="viewerName" type="text" placeholder="Gift ပို့သူ နာမည် (ဥပမာ - Ko Ko)" />
+      <input id="viewerName" type="text" placeholder="လှူဒါန်းသူ နာမည်ထည့်ပါ (ဥပမာ - ကိုကို)" />
       <select id="giftType">
-        <option value="Rose">🌹 Rose (x1)</option>
-        <option value="Lotus">🪷 Lotus (x5)</option>
-        <option value="Incense">🕯️ Incense (x10)</option>
-        <option value="Universe">🌌 Universe (x50)</option>
+        <option value="Rose">🌹 နှင်းဆီပန်း (x1)</option>
+        <option value="Lotus">🪷 ကြာပန်း (x5)</option>
+        <option value="Incense">🕯️ ဆီမီးအလှူ (x10)</option>
+        <option value="Universe">🌌 စကြဝဠာပူဇော်ပွဲ (x50)</option>
       </select>
     </div>
 
     <div class="row">
-      <button id="sendGiftBtn">🎁 Simulate Gift</button>
-      <button class="btn-dark" id="autoSimBtn">▶ Auto Live Sim</button>
-      <button class="btn-dark" id="resetBtn">↺ Reset</button>
+      <button id="sendGiftBtn">🎁 လက်ဆောင်ပို့မည်</button>
+      <button class="btn-dark" id="autoSimBtn">▶ အလိုအလျောက်စမ်းရန်</button>
+      <button class="btn-dark" id="resetBtn">↺ ပြန်စရန်</button>
     </div>
 
     <div class="row">
-      <input id="wsUrl" type="text" placeholder="Optional WebSocket URL (ws://localhost:8080)" />
-      <button class="btn-dark" id="connectWsBtn">Connect</button>
+      <input id="wsUrl" type="text" placeholder="WebSocket လိပ်စာ (ဥပမာ - ws://localhost:8080)" />
+      <button class="btn-dark" id="connectWsBtn">ချိတ်ဆက်ရန်</button>
     </div>
 
-    <div class="feed" id="feed">Live event စောင့်ဆိုင်းနေပါသည်...</div>
+    <div class="feed" id="feed">တိုက်ရိုက်ပူဇော်မှုများ စတင်ရန် အဆင်သင့်ဖြစ်ပါပြီ။</div>
   </div>
 
   <script>
     const stage = document.getElementById("stage");
+    const offeringFlash = document.getElementById("offeringFlash");
     const blessingCard = document.getElementById("blessingCard");
     const blessingTitle = document.getElementById("blessingTitle");
     const blessingText = document.getElementById("blessingText");
@@ -211,19 +239,53 @@
     const giftTypeSelect = document.getElementById("giftType");
     const feed = document.getElementById("feed");
 
-    const sampleNames = ["Kyaw Kyaw", "Su Su", "Min Min", "Thandar", "Aung Aung", "Hnin Wai", "Zayar", "Mya Mya"];
-    const blessings = [
-      "ကိုယ်ကျန်းမာ စိတ်ချမ်းသာ၍ လိုအင်ဆန္ဒများ ပြည့်ဝပါစေ။",
-      "မိသားစု စီးပွားတိုးတက်ပြီး ဘေးရန်ကင်းကွာပါစေ။",
-      "ဉာဏ်ပညာထွန်းကား၍ ကောင်းကျိုးလိုရာဆန္ဒများ အမြန်ပြည့်စုံပါစေ။"
+    const sampleNames = [
+      "မောင်မောင်", "မစုစု", "ကိုမင်းမင်း", "မသန္တာ",
+      "ကိုအောင်အောင်", "မနှင်းဝေ", "ကိုဇေယျာ", "မမြမြ"
     ];
 
+    const giftMeta = {
+      Rose: {
+        label: "နှင်းဆီပန်း",
+        offering: "🌸 နှင်းဆီပန်း လှူဒါန်းနေပါသည်",
+        prayers: [
+          "ပန်းကဲ့သို့ မွှေးပျံ့သင်းကြိုင်သော သီလ၊ သမာဓိ၊ ပညာဂုဏ်များနှင့် ပြည့်စုံပါစေ။",
+          "စိတ်နှလုံး အေးချမ်းသာယာပြီး ကောင်းကျိုးလိုရာဆန္ဒများ ပြည့်ဝပါစေ။"
+        ]
+      },
+      Lotus: {
+        label: "ကြာပန်း",
+        offering: "🪷 ကြာပန်း လှူဒါန်းနေပါသည်",
+        prayers: [
+          "ရွှံ့ညွန်မလူး ကြာပန်းကဲ့သို့ လောကဓံအလယ်တွင် စိတ်ကြည်လင် အေးချမ်းပါစေ။",
+          "ဘေးရန်ကင်းကွာ ကျန်းမာချမ်းသာ၍ မင်္ဂလာအဖြာဖြာနှင့် ပြည့်စုံပါစေ။"
+        ]
+      },
+      Incense: {
+        label: "ဆီမီးအလှူ",
+        offering: "🕯️ ဆီမီး လှူဒါန်းနေပါသည်",
+        prayers: [
+          "ဆီမီးတိုင်အလင်းကဲ့သို့ အသိဉာဏ်ပညာ ထွန်းလင်းတောက်ပပြီး လမ်းမှန်ရောက်ပါစေ။",
+          "အမှောင်ခွင်း၍ အလင်းဆောင်နိုင်သော ကုသိုလ်ကောင်းမှုများ တိုးပွားပါစေ။"
+        ]
+      },
+      Universe: {
+        label: "စကြဝဠာပူဇော်ပွဲ",
+        offering: "🕯️🌸 စကြဝဠာပူဇော်ပွဲ လှူဒါန်းနေပါသည်",
+        prayers: [
+          "စကြဝဠာတစ်ခွင် မေတ္တာဓာတ်ပျံ့နှံ့ပြီး စီးပွားလာဘ်လာဘ အထူးတိုးတက်ပါစေ။",
+          "မိသားစုနှင့်တကွ ကိုယ်စိတ်နှစ်ဖြာ ကျန်းမာချမ်းသာ၍ လိုရာဆန္ဒ အမြန်ပြည့်စုံပါစေ။"
+        ]
+      }
+    };
+
+    // ဘယ်ဘက်နှင့် ညာဘက် ကော်ဇောပေါ်ရှိ နေရာများ (အပေါ်မှအောက်သို့ တန်းစီ)
     const spots = [];
-    for (let r = 0; r < 6; r++) {
-      const y = 52 + r * 7.2;
+    for (let r = 0; r < 5; r++) {
+      const y = 55 + r * 7.8;
       for (let c = 0; c < 4; c++) {
-        spots.push({ x: 11 + c * 7.2, y, taken: false });
-        spots.push({ x: 67 + c * 7.2, y, taken: false });
+        spots.push({ x: 18 + c * 5.6, y, taken: false }); // ဘယ်ဘက်ကော်ဇော
+        spots.push({ x: 60 + c * 5.6, y, taken: false }); // ညာဘက်ကော်ဇော
       }
     }
 
@@ -236,29 +298,49 @@
       feed.innerHTML = `<div>[${t}] ${msg}</div>` + feed.innerHTML;
     }
 
-    function speakText(text) {
+    function speakMyanmarIfSupported(text) {
       if (!("speechSynthesis" in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      const myVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith("my"));
+      if (!myVoice) return;
       window.speechSynthesis.cancel();
       const utter = new SpeechSynthesisUtterance(text);
-      utter.rate = 1.0;
+      utter.voice = myVoice;
+      utter.lang = myVoice.lang;
       window.speechSynthesis.speak(utter);
     }
 
-    function triggerBlessing(name, gift) {
-      const quote = blessings[Math.floor(Math.random() * blessings.length)];
-      blessingTitle.textContent = `🎁 ${name} sent ${gift}`;
-      blessingText.textContent = quote;
+    function showBlessing(name, giftKey) {
+      const info = giftMeta[giftKey] || giftMeta.Rose;
+      const prayer = info.prayers[Math.floor(Math.random() * info.prayers.length)];
+      const fullText = `${name} ၏ ${info.label} လှူဒါန်းမှုကြောင့် — ${prayer}`;
+
+      blessingTitle.textContent = `🙏 ${name} (${info.label} လှူဒါန်းမှု) ဆုတောင်း`;
+      blessingText.textContent = prayer;
       blessingCard.classList.add("active");
-      speakText(`${name} sent ${gift}. ${quote}`);
+      speakMyanmarIfSupported(fullText);
 
       setTimeout(() => {
         blessingCard.classList.remove("active");
-      }, 3200);
+      }, 3600);
     }
 
-    function handleGiftEvent(name, gift) {
+    function showOfferingStatus(text) {
+      offeringFlash.textContent = text;
+      offeringFlash.classList.add("show");
+      setTimeout(() => {
+        offeringFlash.classList.remove("show");
+      }, 1500);
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function handleGiftEvent(name, giftKey) {
       const cleanName = (name || "").trim() || sampleNames[Math.floor(Math.random() * sampleNames.length)];
-      const cleanGift = gift || "Rose";
+      const validKey = giftMeta[giftKey] ? giftKey : "Rose";
+      const info = giftMeta[validKey];
 
       let spot = spots.find(s => !s.taken);
       if (!spot && placed.length > 0) {
@@ -270,28 +352,41 @@
       if (!spot) return;
 
       spot.taken = true;
-      const isMan = Math.random() > 0.5;
-      const imgSrc = isMan ? "man_bow.png" : "woman_bow.png";
+      const imgSrc = Math.random() > 0.5 ? "man_bow.png" : "woman_bow.png";
 
       const el = document.createElement("div");
-      el.className = "devotee";
+      el.className = "devotee walking";
       el.style.left = "50%";
       el.style.top = "95%";
       el.innerHTML = `<span class="devotee-name">${cleanName}</span><img src="${imgSrc}" alt="${cleanName}" />`;
       stage.appendChild(el);
-
-      requestAnimationFrame(() => {
-        el.style.left = `${spot.x}%`;
-        el.style.top = `${spot.y}%`;
-      });
-
-      setTimeout(() => {
-        el.classList.add("bowing");
-      }, 850);
-
       placed.push({ el, spot });
-      triggerBlessing(cleanName, cleanGift);
-      logEvent(`${cleanName} (${cleanGift}) ဝင်ရောက်ရှိခိုးပါသည်။`);
+
+      logEvent(`${cleanName} (${info.label}) သည် အလယ်လမ်းမှ ဘုရားရှင်ထံ လျှောက်သွားနေပါသည်။`);
+
+      // ၁။ အလယ်လမ်းမှ ဘုရားရှေ့ (ပန်း/ဆီမီး လှူဒါန်းရာနေရာ) သို့ လမ်းလျှောက်သွားခြင်း
+      await sleep(50);
+      el.style.left = "50%";
+      el.style.top = "49%";
+      await sleep(900);
+
+      // ၂။ ပန်း၊ ဆီမီး လှူဒါန်းခြင်း
+      el.classList.remove("walking");
+      showOfferingStatus(`${cleanName} — ${info.offering}`);
+      logEvent(`${cleanName} သည် ${info.offering}။`);
+      await sleep(950);
+
+      // ၃။ ကော်ဇောပေါ်ရှိ မိမိနေရာသို့ ပြန်လာခြင်း
+      el.classList.add("walking");
+      el.style.left = `${spot.x}%`;
+      el.style.top = `${spot.y}%`;
+      await sleep(900);
+
+      // ၄။ နေရာတွင် ဦးချကန်တော့ခြင်းနှင့် ဆုတောင်းပြသခြင်း
+      el.classList.remove("walking");
+      el.classList.add("bowing");
+      showBlessing(cleanName, validKey);
+      logEvent(`${cleanName} သည် ကော်ဇောပေါ်တွင် ဦးချကန်တော့ပြီး ဆုတောင်းနေပါသည်။`);
     }
 
     document.getElementById("sendGiftBtn").addEventListener("click", () => {
@@ -303,15 +398,16 @@
       if (autoTimer) {
         clearInterval(autoTimer);
         autoTimer = null;
-        e.target.textContent = "▶ Auto Live Sim";
-        logEvent("Auto Live Sim ရပ်လိုက်ပါပြီ။");
+        e.target.textContent = "▶ အလိုအလျောက်စမ်းရန်";
+        logEvent("အလိုအလျောက်စမ်းသပ်မှုကို ရပ်နားလိုက်ပါပြီ။");
       } else {
+        const keys = Object.keys(giftMeta);
         autoTimer = setInterval(() => {
-          const gifts = ["Rose", "Lotus", "Incense", "Universe"];
-          handleGiftEvent("", gifts[Math.floor(Math.random() * gifts.length)]);
-        }, 2800);
-        e.target.textContent = "❚❚ Stop Sim";
-        logEvent("Auto Live Sim စတင်ပါပြီ။");
+          const randomGift = keys[Math.floor(Math.random() * keys.length)];
+          handleGiftEvent("", randomGift);
+        }, 3600);
+        e.target.textContent = "❚❚ ရပ်နားရန်";
+        logEvent("အလိုအလျောက်စမ်းသပ်မှု စတင်ပါပြီ။");
       }
     });
 
@@ -319,7 +415,9 @@
       placed.forEach(item => item.el.remove());
       placed = [];
       spots.forEach(s => (s.taken = false));
-      logEvent("Stage ကို ပြန်ရှင်းလင်းလိုက်ပါပြီ။");
+      blessingCard.classList.remove("active");
+      offeringFlash.classList.remove("show");
+      logEvent("မျက်နှာပြင်ကို မူလအတိုင်း ပြန်လည်ရှင်းလင်းလိုက်ပါပြီ။");
     });
 
     document.getElementById("connectWsBtn").addEventListener("click", () => {
