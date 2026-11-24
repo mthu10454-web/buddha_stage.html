@@ -3,117 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buddha Hall Stage</title>
+  <title>AI TikTok Live Blessing Stage</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      background: #12100e;
-      color: #f5efe6;
+      background: #0d0b09;
+      color: #f7efe2;
       font-family: system-ui, -apple-system, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 12px;
-      gap: 12px;
+      padding: 10px;
+      gap: 10px;
     }
 
-    .stage-wrapper {
+    .stage {
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       aspect-ratio: 9 / 16;
       position: relative;
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
-      border: 2px solid #8a6428;
+      border: 2px solid #b38738;
       background: url("bg_hall.png") center / cover no-repeat,
-                  linear-gradient(180deg, #3b2410 0%, #1d1108 100%);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
-    }
-
-    .buddha-statue {
-      position: absolute;
-      top: 4%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 66%;
-      max-height: 36%;
-      object-fit: contain;
-      z-index: 3;
-      pointer-events: none;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.75));
-    }
-
-    .buddha-glow {
-      position: absolute;
-      top: 6%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 190px;
-      height: 190px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 215, 115, 0.35), rgba(255, 180, 30, 0) 70%);
-      animation: auraPulse 3s ease-in-out infinite alternate;
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .offering-altar {
-      position: absolute;
-      top: 37%;
-      left: 50%;
-      transform: translateX(-50%);
-      min-width: 180px;
-      max-width: 90%;
-      min-height: 26px;
-      background: rgba(35, 16, 8, 0.88);
-      border: 1px solid rgba(224, 178, 76, 0.85);
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      z-index: 4;
-      font-size: 13px;
-      color: #ffe8a3;
-    }
-
-    .blessing-banner {
-      position: absolute;
-      top: 43%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(25, 10, 5, 0.92);
-      border: 1px solid #f3c65f;
-      color: #ffeaa7;
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      white-space: nowrap;
-      z-index: 9;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .blessing-banner.show {
-      opacity: 1;
-    }
-
-    .carpet-center {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 24%;
-      height: 54%;
-      object-fit: fill;
-      z-index: 2;
-      pointer-events: none;
+                  linear-gradient(180deg, #2e1b0d 0%, #120a05 100%);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.75);
     }
 
     .carpet-sides {
@@ -121,406 +36,308 @@
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 82%;
-      height: 50%;
+      width: 88%;
+      height: 56%;
       object-fit: fill;
       z-index: 1;
       pointer-events: none;
-      opacity: 0.92;
     }
 
-    .seat-spot {
+    .carpet-center {
       position: absolute;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 1px dashed rgba(243, 198, 95, 0.7);
-      background: rgba(255, 215, 120, 0.14);
-      transform: translate(-50%, -50%);
-      z-index: 3;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20%;
+      height: 58%;
+      object-fit: fill;
+      z-index: 2;
       pointer-events: none;
     }
 
-    .seat-spot.taken {
-      border-color: rgba(243, 198, 95, 0.95);
-      background: rgba(243, 198, 95, 0.35);
+    .blessing-card {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      background: rgba(20, 10, 4, 0.9);
+      border: 1px solid #f0c25b;
+      border-radius: 12px;
+      padding: 8px 12px;
+      text-align: center;
+      z-index: 20;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
     }
 
-    .hide-seats .seat-spot {
-      display: none;
-    }
+    .blessing-card.active { opacity: 1; }
+    .blessing-title { font-size: 12px; color: #ffd97d; font-weight: 700; }
+    .blessing-text { font-size: 11px; color: #fff7e6; margin-top: 2px; line-height: 1.35; }
 
     .devotee {
       position: absolute;
-      width: 44px;
-      height: 44px;
+      width: 34px;
+      height: 34px;
       transform: translate(-50%, -50%);
-      z-index: 6;
+      z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
+      transition: left 0.85s ease, top 0.85s ease;
     }
 
     .devotee img {
-      width: 34px;
-      height: 34px;
+      width: 28px;
+      height: 28px;
       object-fit: contain;
       pointer-events: none;
     }
 
     .devotee.bowing img {
-      animation: bowMotion 0.9s ease-in-out infinite alternate;
+      animation: bowAnim 0.85s ease-in-out infinite alternate;
     }
 
-    .name-tag {
+    .devotee-name {
       position: absolute;
-      top: -15px;
-      background: rgba(0, 0, 0, 0.85);
-      color: #ffeaa7;
-      font-size: 9px;
-      padding: 1px 5px;
+      top: -13px;
+      background: rgba(0, 0, 0, 0.78);
+      color: #ffe599;
+      font-size: 8px;
+      padding: 1px 4px;
       border-radius: 4px;
       white-space: nowrap;
     }
 
-    .hide-names .name-tag {
-      display: none;
+    @keyframes bowAnim {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(2px) scale(1.06); }
     }
 
-    .panel {
+    .controls {
       width: 100%;
-      max-width: 400px;
-      background: #1e1b18;
-      border: 1px solid #3b332a;
-      border-radius: 14px;
-      padding: 14px;
+      max-width: 420px;
+      background: #1b1714;
+      border: 1px solid #382f26;
+      border-radius: 12px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-    }
-
-    .panel h2 {
-      margin: 0;
-      font-size: 16px;
-      color: #f7d788;
-    }
-
-    .hint {
-      margin: 0;
-      font-size: 12px;
-      color: #c7bdb0;
-    }
-
-    .input-row,
-    .grid-2 {
-      display: flex;
       gap: 8px;
     }
 
-    .input-row input,
-    .grid-2 select {
-      flex: 1;
-      padding: 9px;
+    .row { display: flex; gap: 8px; }
+    input, select, button {
       border-radius: 8px;
-      border: 1px solid #52473a;
-      background: #14110f;
-      color: #fff;
+      border: 1px solid #4c4033;
+      padding: 8px 10px;
       font-size: 12px;
     }
 
-    .btn-main {
-      width: 100%;
-      padding: 11px;
-      font-size: 14px;
+    input, select {
+      background: #110e0c;
+      color: #fff;
+      flex: 1;
+    }
+
+    button {
+      background: linear-gradient(90deg, #e5a93c, #c47d19);
+      color: #191105;
       font-weight: 700;
       border: none;
-      border-radius: 8px;
-      background: linear-gradient(90deg, #e5a93c, #c9821e);
-      color: #1a1205;
       cursor: pointer;
     }
 
-    .btn-sec {
-      flex: 1;
-      padding: 9px;
-      font-size: 12px;
-      font-weight: 600;
-      border: 1px solid #52473a;
-      border-radius: 8px;
-      background: #2a2520;
+    .btn-dark {
+      background: #2c2620;
       color: #f5efe6;
-      cursor: pointer;
+      border: 1px solid #4c4033;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      text-align: center;
-      background: #151210;
-      padding: 8px;
-      border-radius: 8px;
-      font-size: 12px;
-    }
-
-    .control-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 12px;
-    }
-
-    .log {
-      background: #14110f;
+    .feed {
+      background: #110e0c;
       border-radius: 8px;
       padding: 8px;
       font-size: 11px;
-      color: #9be39b;
-      max-height: 85px;
+      color: #a9e5a9;
+      max-height: 90px;
       overflow-y: auto;
-    }
-
-    @keyframes auraPulse {
-      0% { transform: translateX(-50%) scale(0.95); opacity: 0.65; }
-      100% { transform: translateX(-50%) scale(1.08); opacity: 1; }
-    }
-
-    @keyframes bowMotion {
-      0% { transform: translateY(0) scale(1); }
-      100% { transform: translateY(2px) scale(1.06); }
     }
   </style>
 </head>
 <body>
-  <div class="stage-wrapper hide-seats" id="stage">
-    <div class="buddha-glow"></div>
-    <img class="buddha-statue" src="man_bow.png" alt="ဘုရားဆင်းတု" id="buddhaImg" />
-    <img class="carpet-sides" src="carpet_sides.png" alt="ဘေးကော်ဇော" />
-    <img class="carpet-center" src="carpet_center.png" alt="အလယ်ကော်ဇော" />
-    <div class="offering-altar" id="offeringAltar">🕯️ 🌸 ပူဇော်ရန် အဆင်သင့်</div>
-    <div class="blessing-banner" id="blessingBanner"></div>
+  <div class="stage" id="stage">
+    <img class="carpet-sides" src="carpet_sides.png" alt="Side Carpets" />
+    <img class="carpet-center" src="carpet_center.png" alt="Center Carpet" />
+    <div class="blessing-card" id="blessingCard">
+      <div class="blessing-title" id="blessingTitle"></div>
+      <div class="blessing-text" id="blessingText"></div>
+    </div>
   </div>
 
-  <div class="panel">
-    <h2>Buddha Hall Stage</h2>
-    <p class="hint">နာမည် ထည့်ပြီး Enter နှိပ်ပါ သို့မဟုတ် ခလုတ်နှိပ်ပါ</p>
-
-    <div class="input-row">
-      <input type="text" id="donorInput" placeholder="နာမည် ထည့်ပါ (ဥပမာ - မောင်မောင်)" />
-    </div>
-
-    <div class="grid-2">
-      <select id="genderSelect">
-        <option value="woman">👩 အမျိုးသမီး (woman_bow.png)</option>
-        <option value="man">👨 အမျိုးသား (man_bow.png)</option>
-      </select>
-      <select id="offeringSelect">
-        <option value="both">🕯️🌸 ဆီမီး + ပန်း</option>
-        <option value="lamp">🕯️ ဆီမီး</option>
-        <option value="flower">🌸 ပန်း</option>
+  <div class="controls">
+    <div class="row">
+      <input id="viewerName" type="text" placeholder="Gift ပို့သူ နာမည် (ဥပမာ - Ko Ko)" />
+      <select id="giftType">
+        <option value="Rose">🌹 Rose (x1)</option>
+        <option value="Lotus">🪷 Lotus (x5)</option>
+        <option value="Incense">🕯️ Incense (x10)</option>
+        <option value="Universe">🌌 Universe (x50)</option>
       </select>
     </div>
 
-    <button type="button" class="btn-main" id="enterBtn">✨ Enter (ဝင်ရောက်ရှိခိုးရန်)</button>
-
-    <div class="grid-2">
-      <button type="button" class="btn-sec" id="bowAllBtn">🙏 All Bow (အားလုံးရှိခိုး)</button>
-      <button type="button" class="btn-sec" id="clearBtn">🗑️ Clear All (အားလုံးရှင်း)</button>
+    <div class="row">
+      <button id="sendGiftBtn">🎁 Simulate Gift</button>
+      <button class="btn-dark" id="autoSimBtn">▶ Auto Live Sim</button>
+      <button class="btn-dark" id="resetBtn">↺ Reset</button>
     </div>
 
-    <div class="stats">
-      <div>ဘယ်ဘက်: <strong id="leftCount">0</strong> / 20</div>
-      <div>ညာဘက်: <strong id="rightCount">0</strong> / 20</div>
-      <div>ရှိခိုးနေသူ: <strong id="bowingCount">0</strong></div>
+    <div class="row">
+      <input id="wsUrl" type="text" placeholder="Optional WebSocket URL (ws://localhost:8080)" />
+      <button class="btn-dark" id="connectWsBtn">Connect</button>
     </div>
 
-    <div class="control-row">
-      <span>အမြန်နှုန်း: <strong id="speedVal">1.0x</strong></span>
-      <input type="range" id="speedSlider" min="0.5" max="2.5" step="0.1" value="1.0" />
-    </div>
-
-    <div class="control-row">
-      <label><input type="checkbox" id="nameToggle" checked /> နာမည်ပြရန်</label>
-      <label><input type="checkbox" id="seatToggle" /> နေရာကွက်ပြရန်</label>
-    </div>
-
-    <div class="log" id="logBox">လုပ်ဆောင်မှုများ စတင်ရန် အဆင်သင့်ဖြစ်ပါပြီ။</div>
+    <div class="feed" id="feed">Live event စောင့်ဆိုင်းနေပါသည်...</div>
   </div>
 
   <script>
     const stage = document.getElementById("stage");
-    const offeringAltar = document.getElementById("offeringAltar");
-    const blessingBanner = document.getElementById("blessingBanner");
-    const donorInput = document.getElementById("donorInput");
-    const genderSelect = document.getElementById("genderSelect");
-    const offeringSelect = document.getElementById("offeringSelect");
-    const enterBtn = document.getElementById("enterBtn");
-    const bowAllBtn = document.getElementById("bowAllBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const speedSlider = document.getElementById("speedSlider");
-    const speedVal = document.getElementById("speedVal");
-    const nameToggle = document.getElementById("nameToggle");
-    const seatToggle = document.getElementById("seatToggle");
-    const logBox = document.getElementById("logBox");
+    const blessingCard = document.getElementById("blessingCard");
+    const blessingTitle = document.getElementById("blessingTitle");
+    const blessingText = document.getElementById("blessingText");
+    const viewerNameInput = document.getElementById("viewerName");
+    const giftTypeSelect = document.getElementById("giftType");
+    const feed = document.getElementById("feed");
 
-    const TOTAL_PER_SIDE = 20;
-    let seats = [];
-    let devotees = [];
-    let counter = 1;
-    let speed = 1.0;
-    let bannerTimer = null;
+    const sampleNames = ["Kyaw Kyaw", "Su Su", "Min Min", "Thandar", "Aung Aung", "Hnin Wai", "Zayar", "Mya Mya"];
+    const blessings = [
+      "ကိုယ်ကျန်းမာ စိတ်ချမ်းသာ၍ လိုအင်ဆန္ဒများ ပြည့်ဝပါစေ။",
+      "မိသားစု စီးပွားတိုးတက်ပြီး ဘေးရန်ကင်းကွာပါစေ။",
+      "ဉာဏ်ပညာထွန်းကား၍ ကောင်းကျိုးလိုရာဆန္ဒများ အမြန်ပြည့်စုံပါစေ။"
+    ];
 
-    function buildSeats() {
-      seats = [];
-      stage.querySelectorAll(".seat-spot").forEach(el => el.remove());
-
-      const rows = 5;
-      const cols = 4;
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const leftX = 14 + c * 7.5;
-          const rightX = 63.5 + c * 7.5;
-          const y = 56 + r * 8.2;
-
-          const leftSpot = document.createElement("div");
-          leftSpot.className = "seat-spot";
-          leftSpot.style.left = `${leftX}%`;
-          leftSpot.style.top = `${y}%`;
-          stage.appendChild(leftSpot);
-          seats.push({ side: "ဘယ်", x: leftX, y, taken: false, el: leftSpot });
-
-          const rightSpot = document.createElement("div");
-          rightSpot.className = "seat-spot";
-          rightSpot.style.left = `${rightX}%`;
-          rightSpot.style.top = `${y}%`;
-          stage.appendChild(rightSpot);
-          seats.push({ side: "ညာ", x: rightX, y, taken: false, el: rightSpot });
-        }
+    const spots = [];
+    for (let r = 0; r < 6; r++) {
+      const y = 52 + r * 7.2;
+      for (let c = 0; c < 4; c++) {
+        spots.push({ x: 11 + c * 7.2, y, taken: false });
+        spots.push({ x: 67 + c * 7.2, y, taken: false });
       }
     }
 
-    function updateStats() {
-      const leftTaken = seats.filter(s => s.side === "ဘယ်" && s.taken).length;
-      const rightTaken = seats.filter(s => s.side === "ညာ" && s.taken).length;
-      const bowingCount = devotees.filter(d => d.el.classList.contains("bowing")).length;
+    let placed = [];
+    let autoTimer = null;
+    let socket = null;
 
-      document.getElementById("leftCount").textContent = leftTaken;
-      document.getElementById("rightCount").textContent = rightTaken;
-      document.getElementById("bowingCount").textContent = bowingCount;
+    function logEvent(msg) {
+      const t = new Date().toLocaleTimeString("en-GB", { hour12: false });
+      feed.innerHTML = `<div>[${t}] ${msg}</div>` + feed.innerHTML;
     }
 
-    function addLog(msg) {
-      const time = new Date().toLocaleTimeString("en-GB", { hour12: false });
-      logBox.innerHTML = `<div>[${time}] ${msg}</div>` + logBox.innerHTML;
+    function speakText(text) {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.rate = 1.0;
+      window.speechSynthesis.speak(utter);
     }
 
-    function showBlessing(text) {
-      blessingBanner.textContent = text;
-      blessingBanner.classList.add("show");
-      clearTimeout(bannerTimer);
-      bannerTimer = setTimeout(() => {
-        blessingBanner.classList.remove("show");
-      }, 2800);
+    function triggerBlessing(name, gift) {
+      const quote = blessings[Math.floor(Math.random() * blessings.length)];
+      blessingTitle.textContent = `🎁 ${name} sent ${gift}`;
+      blessingText.textContent = quote;
+      blessingCard.classList.add("active");
+      speakText(`${name} sent ${gift}. ${quote}`);
+
+      setTimeout(() => {
+        blessingCard.classList.remove("active");
+      }, 3200);
     }
 
-    function wait(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms / speed));
-    }
+    function handleGiftEvent(name, gift) {
+      const cleanName = (name || "").trim() || sampleNames[Math.floor(Math.random() * sampleNames.length)];
+      const cleanGift = gift || "Rose";
 
-    async function spawnDevotee() {
-      const seat = seats.find(s => !s.taken);
-      if (!seat) {
-        addLog("⚠️ နေရာအားလုံး ပြည့်သွားပါပြီ။");
-        return;
+      let spot = spots.find(s => !s.taken);
+      if (!spot && placed.length > 0) {
+        const oldest = placed.shift();
+        oldest.el.remove();
+        oldest.spot.taken = false;
+        spot = oldest.spot;
       }
+      if (!spot) return;
 
-      seat.taken = true;
-      seat.el.classList.add("taken");
-
-      const name = donorInput.value.trim() || `ဧည့်သည် ${counter++}`;
-      donorInput.value = "";
-
-      const gender = genderSelect.value;
-      const imgSrc = gender === "man" ? "man_bow.png" : "woman_bow.png";
-      const offering = offeringSelect.value;
+      spot.taken = true;
+      const isMan = Math.random() > 0.5;
+      const imgSrc = isMan ? "man_bow.png" : "woman_bow.png";
 
       const el = document.createElement("div");
       el.className = "devotee";
       el.style.left = "50%";
-      el.style.top = "92%";
-      el.innerHTML = `<span class="name-tag">${name}</span><img src="${imgSrc}" alt="${name}" />`;
+      el.style.top = "95%";
+      el.innerHTML = `<span class="devotee-name">${cleanName}</span><img src="${imgSrc}" alt="${cleanName}" />`;
       stage.appendChild(el);
-      devotees.push({ el, seat });
 
-      el.style.transition = `left ${700 / speed}ms ease, top ${700 / speed}ms ease`;
-      el.style.left = "50%";
-      el.style.top = "48%";
-      await wait(750);
+      requestAnimationFrame(() => {
+        el.style.left = `${spot.x}%`;
+        el.style.top = `${spot.y}%`;
+      });
 
-      const offeringText =
-        offering === "lamp" ? "🕯️ ဆီမီး" :
-        offering === "flower" ? "🌸 ပန်း" : "🕯️🌸 ဆီမီး + ပန်း";
-      offeringAltar.textContent = `${offeringText} (${name})`;
-      showBlessing(`🙏 ${name} - ${offeringText} ပူဇော်ပြီးပါပြီ`);
-      addLog(`${name} သည် ${offeringText} ပူဇော်ခဲ့သည်။`);
-      await wait(600);
+      setTimeout(() => {
+        el.classList.add("bowing");
+      }, 850);
 
-      el.style.transition = `left ${900 / speed}ms ease-in-out, top ${900 / speed}ms ease-in-out`;
-      el.style.left = `${seat.x}%`;
-      el.style.top = `${seat.y}%`;
-      await wait(950);
-
-      el.classList.add("bowing");
-      updateStats();
-      addLog(`${name} သည် ${seat.side}ဘက် နေရာတွင် ရှိခိုးနေပါသည်။`);
+      placed.push({ el, spot });
+      triggerBlessing(cleanName, cleanGift);
+      logEvent(`${cleanName} (${cleanGift}) ဝင်ရောက်ရှိခိုးပါသည်။`);
     }
 
-    enterBtn.addEventListener("click", spawnDevotee);
-    donorInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        spawnDevotee();
+    document.getElementById("sendGiftBtn").addEventListener("click", () => {
+      handleGiftEvent(viewerNameInput.value, giftTypeSelect.value);
+      viewerNameInput.value = "";
+    });
+
+    document.getElementById("autoSimBtn").addEventListener("click", (e) => {
+      if (autoTimer) {
+        clearInterval(autoTimer);
+        autoTimer = null;
+        e.target.textContent = "▶ Auto Live Sim";
+        logEvent("Auto Live Sim ရပ်လိုက်ပါပြီ။");
+      } else {
+        autoTimer = setInterval(() => {
+          const gifts = ["Rose", "Lotus", "Incense", "Universe"];
+          handleGiftEvent("", gifts[Math.floor(Math.random() * gifts.length)]);
+        }, 2800);
+        e.target.textContent = "❚❚ Stop Sim";
+        logEvent("Auto Live Sim စတင်ပါပြီ။");
       }
     });
 
-    bowAllBtn.addEventListener("click", () => {
-      devotees.forEach(d => d.el.classList.add("bowing"));
-      updateStats();
-      showBlessing("🙏 အားလုံး ညီညာစွာ ရှိခိုးနေကြပါသည်");
-      addLog("ရှိနေသူအားလုံး ရှိခိုးမှု ပြုလုပ်နေပါသည်။");
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      placed.forEach(item => item.el.remove());
+      placed = [];
+      spots.forEach(s => (s.taken = false));
+      logEvent("Stage ကို ပြန်ရှင်းလင်းလိုက်ပါပြီ။");
     });
 
-    clearBtn.addEventListener("click", () => {
-      devotees.forEach(d => d.el.remove());
-      devotees = [];
-      seats.forEach(s => {
-        s.taken = false;
-        s.el.classList.remove("taken");
-      });
-      offeringAltar.textContent = "🕯️ 🌸 ပူဇော်ရန် အဆင်သင့်";
-      updateStats();
-      addLog("နေရာများအားလုံးကို ရှင်းလင်းလိုက်ပါပြီ။");
+    document.getElementById("connectWsBtn").addEventListener("click", () => {
+      const url = document.getElementById("wsUrl").value.trim();
+      if (!url) return;
+      if (socket) socket.close();
+      socket = new WebSocket(url);
+      socket.onopen = () => logEvent(`WebSocket ချိတ်ဆက်ပြီးပါပြီ: ${url}`);
+      socket.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.username || data.giftName) {
+            handleGiftEvent(data.username, data.giftName);
+          }
+        } catch (_) {}
+      };
+      socket.onclose = () => logEvent("WebSocket ချိတ်ဆက်မှု ပိတ်သွားပါပြီ။");
     });
-
-    speedSlider.addEventListener("input", () => {
-      speed = parseFloat(speedSlider.value);
-      speedVal.textContent = `${speed.toFixed(1)}x`;
-    });
-
-    nameToggle.addEventListener("change", () => {
-      stage.classList.toggle("hide-names", !nameToggle.checked);
-    });
-
-    seatToggle.addEventListener("change", () => {
-      stage.classList.toggle("hide-seats", !seatToggle.checked);
-    });
-
-    buildSeats();
-    updateStats();
   </script>
 </body>
-  </html>
-  
+</html>
